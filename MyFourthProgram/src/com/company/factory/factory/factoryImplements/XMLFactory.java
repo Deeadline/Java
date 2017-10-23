@@ -1,27 +1,27 @@
 package com.company.factory.factory.factoryImplements;
 
-public class XMLFactory implements Factory {
+public class XMLFactory implements FactoryInterface {
     public String getCity(){
-        return null;
+        return person.getCity()+ " XML";
     }
 
     public String getName() {
-        return null;
+        return person.getName()+ " XML";
     }
 
-    public int getAge() {
-        return 0;
+    public int getAge(){
+        return person.getAge();
     }
 
     public void setAge(int age) {
-
+        this.person.setAge(age);
     }
 
-    public void setCity(char city) {
-
+    public void setCity(String city) {
+        this.person.setCity(city);
     }
 
-    public void setName(char name) {
-
+    public void setName(String name) {
+        this.person.setName(name);
     }
 }
