@@ -1,61 +1,56 @@
 package DartGameFirst;
 
 public class DartGame {
-    private int firstShooter = 501;
-    private int secondShooter = 501;
+    private int firstShooterPoints = 501;
+    private int secondShooterPoints = 501;
 
-    public void shoot(int value, int multiplicity, int playerTurn) {
-        validate(value,multiplicity);
-        if(playerTurn == 1){
-            firstShooter = countPoints(value, multiplicity, getFirstPoints());
-            if(checkWin(firstShooter)){
-                System.out.println("FIRST PLAYER WON");
+
+    public int getFirstShooterPoints() {
+        return firstShooterPoints;
+    }
+
+    public int getSecondShooterPoints() {
+        return secondShooterPoints;
+    }
+
+    public void shoot(int points, int multiplier, int playerTurn) {
+        validateData(points, multiplier);
+        if(playerTurn == 1) {
+            firstShooterPoints = countPoints(points, multiplier, getFirstShooterPoints());
+            if(isWinner(getFirstShooterPoints())) {
+                System.out.println("First player is won!");
             }
         }
         else {
-            secondShooter = countPoints(value, multiplicity, getSecondPoints());
-            if(checkWin(secondShooter)){
-                System.out.println("SECOND PLAYER WON");
+            secondShooterPoints = countPoints(points, multiplier, getSecondShooterPoints());
+            System.out.println(secondShooterPoints);
+            if(isWinner(getSecondShooterPoints())) {
+                System.out.println("Second player is won!");
             }
         }
     }
-    private int countPoints(int value, int multiplicity, int points){
-        points -= value*multiplicity;
-            if(points == 0){
-                return 1000;
-            }
-            else if (points < 0){
-                return points+value*multiplicity;
-            }
-           return points;
-    }
-    private boolean checkWin(int points){
-        if(points == 1000){
-            return true;
+
+    private int countPoints(int value, int multiplier, int points) {
+        points -= value * multiplier;
+        if(points == 0) {
+            return 1000;
         }
-            return false;
-    }
-    public void validate(int value, int multiplicity) throws IllegalArgumentException{
-        if(value > 20 && value != 50 && value !=25){
-            throw new IllegalArgumentException("Value is invalid");
+        if(points < 0) {
+            return points + (value * multiplier);
         }
-        if(multiplicity != 2 && multiplicity != 1 && multiplicity != 3){
-            throw  new IllegalArgumentException("Multiplicity is invalid");
-        }
-    }
-    public int getFirstPoints() {
-        return firstShooter;
+        return points;
     }
 
-    public int getSecondPoints() {
-        return secondShooter;
+    private boolean isWinner(int points) {
+        return (points == 1000) ? true : false;
     }
 
-    public void setFirstShooter(Integer firstShooter) {
-        this.firstShooter = firstShooter;
-    }
-
-    public void setSecondShooter(Integer secondShooter) {
-        this.secondShooter = secondShooter;
+    private void validateData(int points, int multiplier) throws IllegalArgumentException {
+        if(points < 0 || points > 20) {
+            throw new IllegalArgumentException("Illegal value of points!");
+        }
+        if(multiplier != 1 && multiplier != 2 && multiplier != 3) {
+            throw new IllegalArgumentException("Illegal value of multiplier!");
+        }
     }
 }
