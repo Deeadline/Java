@@ -1,0 +1,10 @@
+1. cmd -> ścieżka gdzie jest chromedriver.exe -> uruchom
+
+2. cmd -> java -Dwebdriver.chrome.driver=SCIEŻKA do chromedriver.exe -jar selenium-server-standalone-2.52.0.jar -port 4440 (moze byc inny!)
+-- remotewebdriver 127.0.0.1:port/wd/hub
+
+seleniumeasy.com/test/basic-first-form-demo.html
+
+Ogarnąć xPath - parser XML , zapoznać się z jego funkcjami :)
+
+Przetestować jakiś element ze stronki seleniumeasy.com -> 10 różnych elementów.
