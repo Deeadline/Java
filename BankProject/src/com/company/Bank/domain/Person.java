@@ -21,15 +21,14 @@ public class Person {
         bankAccountList.add(bankAccount);
     }
 
-    public List<BankAccount> getBankAccountList() {
-        return bankAccountList;
-    }
-
     @Override
     public String toString() {
-        return "Name='" + name + '\'' +
-                ", Surname='" + surname + '\'' +
-                ", Birthdate=" + birthDate;
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                ", bankAccountList=" + bankAccountList +
+                '}';
     }
 
     @Override
@@ -45,12 +44,10 @@ public class Person {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(name, surname, birthDate, bankAccountList);
     }
 
     public String getName() {
-
         return name;
     }
 
@@ -60,18 +57,10 @@ public class Person {
 
     public BankAccount getAccount(String number) {
         for (BankAccount account : bankAccountList) {
-            //System.out.println(account.getAccountNumber() + ";" + number);
             if (account.getAccountNumber().equals(number)) {
                 return account;
             }
         }
         return null;
-    }
-
-    public void print() {
-        System.out.println(this.toString());
-        for (BankAccount account : bankAccountList) {
-            System.out.println(account.toString());
-        }
     }
 }

@@ -15,5 +15,4 @@ public interface IFileManager {
 
     void updateFile(String path, int value, String number) throws IOException;
 
-//    void readFromFileToClass(String path, Class<Object> object) throws IOException;
 }

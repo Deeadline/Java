@@ -3,33 +3,33 @@ package com.company.Bank;
 import com.company.Bank.domain.Bank;
 import com.company.Bank.domain.BankAccount;
 import com.company.Bank.domain.Person;
+import com.company.Bank.domain.Swift;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 public class BankProvider {
     private static BankProvider bankProviderInstance;
     private static final List<Person> users = new ArrayList<>();
-    private static final Bank bank = Bank.getBankInstance();
+    private static final List<Bank> bankList = new ArrayList<>();
     private static final FileManager file = new FileManager();
 
-/*    static{
-        if(file.isFileExist("Persons.txt")){
-            try {
-                Person person = null;
-                file.readFromFileToClass("Persons.txt"), person);
-                users.add(person);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }*/
+    public void createNewBank(Swift swiftNumber){
+        bankList.add(new Bank(swiftNumber));
 
-    public Bank getBank() {
-        return bank;
+    }
+
+    public List<Bank> getAllBanks() {
+        return bankList;
+    }
+
+    public Bank getBank(Swift swift){
+        for(Bank bank : bankList){
+            if(bank.getSwiftNumber() == swift)
+                return bank;
+        }
+        return null;
     }
 
     private BankProvider() {
@@ -54,17 +54,20 @@ public class BankProvider {
     }
 
 
-    public BankAccount addAccount(Person accountUser) throws IOException {
+    public BankAccount addAccount(Person accountUser, Swift swiftNumber) throws IOException {
         String numbers = new Random().ints().boxed().filter(i -> i >= 0 && i <= 9).limit(18).collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
         BankAccount account = new BankAccount(numbers);
         accountUser.addAccount(account);
-        bank.addAccount(account);
+        for(Bank bank : bankList) {
+            if(bank.getSwiftNumber() == swiftNumber)
+                bank.addAccount(account);
+        }
         if (!file.isFileExist("Bank.txt")) {
             file.openFile("Bank.txt");
         } else {
             file.removeFile("Bank.txt");
         }
-        file.saveToFile("Bank.txt", bank.toString());
+        file.saveToFile("Bank.txt", String.valueOf(bankList));
         if (!file.isFileExist("Accounts.txt"))
             file.openFile("Accounts.txt");
         file.saveToFile("Accounts.txt", account.toString());
