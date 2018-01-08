@@ -2,15 +2,15 @@ package com.company.factory.implementation;
 
 import com.company.factory.Factory;
 
-public class CSVFactory implements Factory{
+public class CSVFactory implements Factory {
     @Override
     public String getName() {
-        return "CSV";
+        return null;
     }
 
     @Override
     public Integer getAge() {
-        return 1;
+        return null;
     }
 
     @Override
@@ -30,6 +30,6 @@ public class CSVFactory implements Factory{
 
     @Override
     public String getCity() {
-        return "CSV City";
+        return null;
     }
 }

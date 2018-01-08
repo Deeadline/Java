@@ -1,4 +1,4 @@
-package com.company.factory.enums;
+package com.company.factory.enums.factory;
 
 import com.company.factory.Factory;
 import com.company.factory.implementation.CSVFactory;

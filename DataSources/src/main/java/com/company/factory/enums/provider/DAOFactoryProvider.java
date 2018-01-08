@@ -1,7 +1,7 @@
-package com.company.factory.provider;
+package com.company.factory.enums.provider;
 
 import com.company.factory.Factory;
-import com.company.factory.enums.FactoryEnum;
+import com.company.factory.enums.factory.FactoryEnum;
 import com.company.factory.implementation.CSVFactory;
 import com.company.factory.implementation.DBFactory;
 import com.company.factory.implementation.WSFactory;
@@ -30,7 +30,7 @@ public enum DAOFactoryProvider {
         factory = factoryEnumToFactoryMap.get(factoryEnum);
     }
 
-    public Factory getService(){
+    public Factory getService() {
         return factory;
     }
 }

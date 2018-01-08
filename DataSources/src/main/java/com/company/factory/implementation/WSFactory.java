@@ -5,12 +5,12 @@ import com.company.factory.Factory;
 public class WSFactory implements Factory {
     @Override
     public String getName() {
-        return "WS";
+        return null;
     }
 
     @Override
     public Integer getAge() {
-        return 3;
+        return null;
     }
 
     @Override
@@ -30,6 +30,6 @@ public class WSFactory implements Factory {
 
     @Override
     public String getCity() {
-        return "WS City";
+        return null;
     }
 }

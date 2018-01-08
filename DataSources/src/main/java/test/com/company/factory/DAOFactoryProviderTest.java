@@ -1,11 +1,11 @@
 package test.com.company.factory;
 
-import com.company.factory.enums.FactoryEnum;
+import com.company.factory.enums.factory.FactoryEnum;
 import com.company.factory.implementation.CSVFactory;
 import com.company.factory.implementation.DBFactory;
 import com.company.factory.implementation.WSFactory;
 import com.company.factory.implementation.XMLFactory;
-import com.company.factory.provider.DAOFactoryProvider;
+import com.company.factory.enums.provider.DAOFactoryProvider;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

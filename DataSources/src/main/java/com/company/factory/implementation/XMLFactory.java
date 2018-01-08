@@ -5,13 +5,14 @@ import com.company.factory.Factory;
 public class XMLFactory implements Factory {
     @Override
     public String getName() {
-        return "XML";
+        return null;
     }
 
     @Override
     public Integer getAge() {
-        return 4;
+        return null;
     }
+
     @Override
     public void setCity(String city) {
 
@@ -29,6 +30,6 @@ public class XMLFactory implements Factory {
 
     @Override
     public String getCity() {
-        return "XML City";
+        return null;
     }
 }
