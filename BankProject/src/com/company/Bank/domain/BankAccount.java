@@ -1,6 +1,8 @@
 package com.company.Bank.domain;
 
 
+import com.company.Bank.provider.BankProvider;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -8,13 +10,16 @@ import java.util.Objects;
 public class BankAccount {
     private String bankAccountNumber;
     private int accountBalance = 0;
-    private final List<String> paymentsList = new ArrayList<>();
+    private final List<Payment> paymentsList = new ArrayList<>();
 
     public BankAccount(String bankAccountNumber) {
-        if (this.bankAccountNumber.equals(bankAccountNumber))
-            throw new IllegalArgumentException("There cannot exists 2 accounts with same number");
+        for (Bank bank : BankProvider.getBankProviderInstance().getAllBanks()) {
+            for (BankAccount bankAccount : bank.getBankAccountList()) {
+                if (bankAccount.getAccountNumber().equals(bankAccountNumber))
+                    throw new IllegalArgumentException("There cannot exists 2 account with one accountNumber");
+            }
+        }
         this.bankAccountNumber = bankAccountNumber;
-
     }
 
     public String getAccountNumber() {
@@ -41,7 +46,7 @@ public class BankAccount {
         return 0;
     }
 
-    public void addPayment(String payment) {
+    public void addPayment(Payment payment) {
         paymentsList.add(payment);
     }
 

@@ -1,4 +1,4 @@
-import com.company.Bank.BankController;
+import com.company.Bank.controllers.BankController;
 
 import java.io.IOException;
 

@@ -9,7 +9,7 @@ public class Person {
     private String surname;
     private String birthDate;
     private final List<BankAccount> bankAccountList = new ArrayList<>();
-    private final List<String> paymentsList = new ArrayList<>();
+    private final List<Payment> paymentsList = new ArrayList<>();
 
     public Person(String name, String surname, String birthDate) {
         this.name = name;
@@ -38,7 +38,7 @@ public class Person {
         bankAccountList.add(bankAccount);
     }
 
-    public void addPayment(String payment) {
+    public void addPayment(Payment payment) {
         paymentsList.add(payment);
     }
 

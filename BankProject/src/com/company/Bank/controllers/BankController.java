@@ -1,9 +1,7 @@
-package com.company.Bank;
+package com.company.Bank.controllers;
 
-import com.company.Bank.domain.Bank;
-import com.company.Bank.domain.BankAccount;
-import com.company.Bank.domain.Person;
-import com.company.Bank.domain.Swift;
+import com.company.Bank.domain.*;
+import com.company.Bank.provider.BankProvider;
 
 import java.io.IOException;
 import java.time.LocalDate;
@@ -12,11 +10,17 @@ import java.util.Scanner;
 public class BankController {
     private static BankController instance;
     private final BankProvider bankProvider = BankProvider.getBankProviderInstance();
-    private int firstChoice, secondChoice, thirdChoice, fourthChoice, userChoice, money, i;
-    private Scanner scanner = new Scanner(System.in);
-    private String paymentTitle, from, to, accountNumber;
-    private Person person;
-    private String name, surname, birthDate;
+    private int firstChoice;
+    private int secondChoice;
+    private int thirdChoice;
+    private int money;
+    private int i;
+    private final Scanner scanner = new Scanner(System.in);
+    private Payment payment;
+    private String paymentTitle;
+    private String from;
+    private String to;
+    private String surname;
     private Swift swiftNumber1, swiftNumber2;
 
     private BankController() {
@@ -35,14 +39,14 @@ public class BankController {
         System.out.println("2. Create account");
         System.out.println("3. Withdraw money");
         System.out.println("4. Deposit money");
-        System.out.println("5. Show bank details");
-        System.out.println("6. Show user details");
-        System.out.println("7. Show account details");
-        System.out.println("8. Show payments history");
-        System.out.println("9. International transaction");
+        System.out.println("5. International transaction");
+        System.out.println("6. Show bank details");
+        System.out.println("7. Show user details");
+        System.out.println("8. Show account details");
+        System.out.println("9. Show payments history");
         System.out.println("10. To quit: \n");
         System.out.println("Enter your choice: ");
-        userChoice = scanner.nextInt();
+        int userChoice = scanner.nextInt();
         if (userChoice == 10)
             return false;
         doSomething(userChoice);
@@ -81,12 +85,8 @@ public class BankController {
             case 9:
                 paymentDetails();
                 break;
-            case 10:
-                break;
             default:
                 break;
-
-
         }
     }
 
@@ -108,40 +108,42 @@ public class BankController {
 
     private void createUser() throws IOException {
         System.out.println("Enter your name: ");
-        name = scanner.next();
+        String name = scanner.next();
         System.out.println("Enter your surname: ");
         surname = scanner.next();
         System.out.println("Enter your birthdate: ");
-        birthDate = scanner.next();
-        person = new Person(name, surname, birthDate);
+        String birthDate = scanner.next();
+        Person person = new Person(name, surname, birthDate);
         bankProvider.addUser(person);
 
     }
 
     private void createAccount() throws IOException {
         if (bankProvider.getUsers().isEmpty())
-            throw new IllegalStateException("You dont have accounts!");
-        else {
-            int i = 0;
-            System.out.println("Which bank do you want add an account? ");
-            for (Bank bank : bankProvider.getAllBanks()) {
-                System.out.println(i + ". " + bank.getSwiftNumber().toString());
-                i++;
-            }
-            firstChoice = scanner.nextInt();
-            System.out.println("Which person do you want to create an account? ");
-            i = 0;
-            for (Person user : bankProvider.getUsers()) {
-                System.out.println(i + ". " + user.getName() + " " + user.getSurname());
-                i++;
-            }
-            secondChoice = scanner.nextInt();
-            if (bankProvider.addAccount(bankProvider.getUsers().get(secondChoice), bankProvider.getAllBanks().get(firstChoice).getSwiftNumber()))
-                System.out.println("An account has been created.");
+            throw new IllegalArgumentException("You don't have persons!");
+        if (bankProvider.getAllBanks().isEmpty())
+            throw new IllegalArgumentException("You don't have banks!");
+        int i = 0;
+        System.out.println("Which bank do you want to add an account? ");
+        for (Bank bank : bankProvider.getAllBanks()) {
+            System.out.println(i + ". " + bank.getSwiftNumber().toString());
+            i++;
         }
+        firstChoice = scanner.nextInt();
+        System.out.println("Which person do you want to create an account? ");
+        i = 0;
+        for (Person user : bankProvider.getUsers()) {
+            System.out.println(i + ". " + user.getName() + " " + user.getSurname());
+            i++;
+        }
+        secondChoice = scanner.nextInt();
+        if (bankProvider.addAccount(bankProvider.getUsers().get(secondChoice), bankProvider.getAllBanks().get(firstChoice).getSwiftNumber()))
+            System.out.println("An account has been created.");
     }
 
     private void withdraw() throws IOException {
+        if (bankProvider.getAllBanks().isEmpty())
+            throw new IllegalArgumentException("You don't have banks!");
         i = 0;
         System.out.println("Which bank account do you want use? ");
         for (Bank bank : bankProvider.getAllBanks()) {
@@ -150,6 +152,8 @@ public class BankController {
         }
         firstChoice = scanner.nextInt();
         i = 0;
+        if (bankProvider.getAllBanks().get(firstChoice).getBankAccountList().isEmpty())
+            throw new IllegalArgumentException("You don't have accounts!");
         for (BankAccount account : bankProvider.getAllBanks().get(firstChoice).getBankAccountList()) {
             System.out.println(i + ". " + account.getAccountNumber());
             i++;
@@ -165,15 +169,18 @@ public class BankController {
         thirdChoice = scanner.nextInt();
         System.out.println("How much money do you want withdraw? ");
         money = scanner.nextInt();
-        from = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber();
-        to = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(thirdChoice).getAccountNumber();
         swiftNumber1 = bankProvider.getAllBanks().get(firstChoice).getSwiftNumber();
         swiftNumber2 = bankProvider.getAllBanks().get(secondChoice).getSwiftNumber();
+        from = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber();
+        to = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(thirdChoice).getAccountNumber();
         paymentTitle = "Payment from " + bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber() + " to " + bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(thirdChoice).getAccountNumber() + " cash: " + money + " Date: " + LocalDate.now();
-        bankProvider.withdraw(from, to, money, paymentTitle, swiftNumber1, swiftNumber2);
+        payment = new Payment(paymentTitle);
+        bankProvider.withdraw(from, to, money, payment, swiftNumber1, swiftNumber2);
     }
 
     private void deposit() throws IOException {
+        if (bankProvider.getAllBanks().isEmpty())
+            throw new IllegalArgumentException("You don't have banks!");
         i = 0;
         System.out.println("Which bank account do you want use? ");
         for (Bank bank : bankProvider.getAllBanks()) {
@@ -182,6 +189,8 @@ public class BankController {
         }
         firstChoice = scanner.nextInt();
         i = 0;
+        if (bankProvider.getAllBanks().get(firstChoice).getBankAccountList().isEmpty())
+            throw new IllegalArgumentException("You don't have accounts!");
         for (BankAccount account : bankProvider.getAllBanks().get(firstChoice).getBankAccountList()) {
             System.out.println(i + ". " + account.getAccountNumber());
             i++;
@@ -190,13 +199,16 @@ public class BankController {
         secondChoice = scanner.nextInt();
         System.out.println("How much money do you want deposit? ");
         money = scanner.nextInt();
-        paymentTitle = "Payment to " + bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber() + " cash: " + money + " Date: " + LocalDate.now();
         to = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber();
+        paymentTitle = "Payment to " + bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber() + " cash: " + money + " Date: " + LocalDate.now();
+        payment = new Payment(paymentTitle);
         swiftNumber1 = bankProvider.getAllBanks().get(firstChoice).getSwiftNumber();
-        bankProvider.deposit(to, money, paymentTitle, swiftNumber1);
+        bankProvider.deposit(to, money, payment, swiftNumber1);
     }
 
     private void internationalTransfer() throws IOException {
+        if (bankProvider.getAllBanks().isEmpty())
+            throw new IllegalArgumentException("You don't have banks!");
         i = 0;
         System.out.println("Which bank account do you want use to withdraw? ");
         for (Bank bank : bankProvider.getAllBanks()) {
@@ -211,6 +223,8 @@ public class BankController {
             i++;
         }
         secondChoice = scanner.nextInt();
+        if (bankProvider.getAllBanks().get(firstChoice).getBankAccountList().isEmpty() || bankProvider.getAllBanks().get(secondChoice).getBankAccountList().isEmpty())
+            throw new IllegalArgumentException("You don't have accounts!");
         System.out.println(bankProvider.getAllBanks().get(firstChoice).getSwiftNumber().toString() + ":");
         i = 0;
         for (BankAccount account : bankProvider.getAllBanks().get(firstChoice).getBankAccountList()) {
@@ -226,18 +240,21 @@ public class BankController {
             i++;
         }
         System.out.println("To which account do you want deposit? ");
-        fourthChoice = scanner.nextInt();
+        int fourthChoice = scanner.nextInt();
         System.out.println("How much money do you want withdraw? ");
         money = scanner.nextInt();
-        paymentTitle = "Payment from " + bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(thirdChoice).getAccountNumber() + " to " + bankProvider.getAllBanks().get(secondChoice).getBankAccountList().get(fourthChoice).getAccountNumber() + " cash: " + money + " Date: " + LocalDate.now();
         from = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(thirdChoice).getAccountNumber();
         to = bankProvider.getAllBanks().get(secondChoice).getBankAccountList().get(fourthChoice).getAccountNumber();
+        paymentTitle = "Payment from " + bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(thirdChoice).getAccountNumber() + " to " + bankProvider.getAllBanks().get(secondChoice).getBankAccountList().get(fourthChoice).getAccountNumber() + " cash: " + money + " Date: " + LocalDate.now();
         swiftNumber1 = bankProvider.getAllBanks().get(firstChoice).getSwiftNumber();
         swiftNumber2 = bankProvider.getAllBanks().get(secondChoice).getSwiftNumber();
-        bankProvider.withdraw(from, to, money, paymentTitle, swiftNumber1, swiftNumber2);
+        payment = new Payment(paymentTitle);
+        bankProvider.withdraw(from, to, money, payment, swiftNumber1, swiftNumber2);
     }
 
     private void bankDetails() throws IOException {
+        if (bankProvider.getAllBanks().isEmpty())
+            throw new IllegalArgumentException("You don't have banks!");
         i = 0;
         System.out.println("Which bank do you want to view? ");
         for (Bank bank : bankProvider.getAllBanks()) {
@@ -252,6 +269,8 @@ public class BankController {
     }
 
     private void userDetails() throws IOException {
+        if (bankProvider.getUsers().isEmpty())
+            throw new IllegalArgumentException("You don't have users!");
         System.out.println("Which person do you want to view? ");
         i = 0;
         for (Person user : bankProvider.getUsers()) {
@@ -266,6 +285,12 @@ public class BankController {
     }
 
     private void accountDetails() throws IOException {
+        if (bankProvider.getAllBanks().isEmpty())
+            throw new IllegalArgumentException("You don't have banks!");
+        for (Bank bank : bankProvider.getAllBanks()) {
+            if (bank.getBankAccountList().isEmpty())
+                throw new IllegalArgumentException("You don't have accounts!");
+        }
         System.out.println("Which account do you want to view?");
         for (Bank bank : bankProvider.getAllBanks()) {
             System.out.println(i + ". " + bank.getSwiftNumber());
@@ -278,18 +303,25 @@ public class BankController {
         firstChoice = scanner.nextInt();
         System.out.println("Account: ");
         secondChoice = scanner.nextInt();
-        accountNumber = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber();
+        String accountNumber = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber();
         for (String content : bankProvider.readAccountHistory(accountNumber)) {
             System.out.println(content);
         }
     }
 
     private void paymentDetails() throws IOException {
+        if (bankProvider.getAllBanks().isEmpty())
+            throw new IllegalArgumentException("You don't have banks!");
+        for (Bank bank : bankProvider.getAllBanks()) {
+            if (bank.getBankAccountList().isEmpty())
+                throw new IllegalArgumentException("You don't have accounts!");
+        }
+        if (bankProvider.getUsers().isEmpty())
+            throw new IllegalArgumentException("You don't have persons!");
+
         System.out.println("Payments view: ");
         for (String content : bankProvider.readPaymentsHistory()) {
             System.out.println(content);
         }
     }
-
-
 }

@@ -1,15 +1,17 @@
 package com.company.Bank.domain;
 
+import com.company.Bank.provider.BankProvider;
+
 import java.util.*;
 
 public class Bank {
     private Swift swiftNumber;
     private List<BankAccount> bankAccountList = new ArrayList<>();
     private List<Person> personList = new ArrayList<>();
-    private List<String> paymentsList = new ArrayList<>();
+    private List<Payment> paymentsList = new ArrayList<>();
 
     public Bank(Swift swiftNumber) {
-        if (this.swiftNumber == swiftNumber)
+        if (BankProvider.getBankProviderInstance().getBank(swiftNumber) != null)
             throw new IllegalArgumentException("There cannot exists 2 banks with one Swift number");
         this.swiftNumber = swiftNumber;
     }
@@ -30,7 +32,7 @@ public class Bank {
         personList.add(person);
     }
 
-    public void addPayments(String paymentTitle) {
+    public void addPayments(Payment paymentTitle) {
         paymentsList.add(paymentTitle);
     }
 
