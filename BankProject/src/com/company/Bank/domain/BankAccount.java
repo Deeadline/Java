@@ -1,27 +1,18 @@
 package com.company.Bank.domain;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class BankAccount {
     private String bankAccountNumber;
     private int accountBalance = 0;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || !(o instanceof BankAccount)) return false;
-        BankAccount account = (BankAccount) o;
-        return accountBalance == account.accountBalance &&
-                Objects.equals(bankAccountNumber, account.bankAccountNumber);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(bankAccountNumber, accountBalance);
-    }
+    private final List<String> paymentsList = new ArrayList<>();
 
     public BankAccount(String bankAccountNumber) {
+        if (this.bankAccountNumber.equals(bankAccountNumber))
+            throw new IllegalArgumentException("There cannot exists 2 accounts with same number");
         this.bankAccountNumber = bankAccountNumber;
 
     }
@@ -34,14 +25,8 @@ public class BankAccount {
         return accountBalance;
     }
 
-    @Override
-    public String toString() {
-        return "bankAccountNumber='" + bankAccountNumber + '\'' +
-                ", accountBalance=" + accountBalance;
-    }
-
     public int deposit(int value) {
-        if(value>0) {
+        if (value > 0) {
             this.accountBalance += value;
             return accountBalance;
         }
@@ -49,11 +34,35 @@ public class BankAccount {
     }
 
     public int withdraw(int value) {
-        if(value>0) {
+        if (value > 0) {
             this.accountBalance -= value;
             return accountBalance;
         }
         return 0;
+    }
+
+    public void addPayment(String payment) {
+        paymentsList.add(payment);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || !(o instanceof BankAccount)) return false;
+        BankAccount account = (BankAccount) o;
+        return Objects.equals(bankAccountNumber, account.bankAccountNumber);
+    }
+
+    @Override
+    public String toString() {
+        return "bankAccountNumber='" + bankAccountNumber + '\'' +
+                ", accountBalance=" + accountBalance +
+                ", paymentsList=" + paymentsList;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(bankAccountNumber);
     }
 
 }

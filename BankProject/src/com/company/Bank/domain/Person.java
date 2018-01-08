@@ -9,7 +9,7 @@ public class Person {
     private String surname;
     private String birthDate;
     private final List<BankAccount> bankAccountList = new ArrayList<>();
-
+    private final List<String> paymentsList = new ArrayList<>();
 
     public Person(String name, String surname, String birthDate) {
         this.name = name;
@@ -17,8 +17,29 @@ public class Person {
         this.birthDate = birthDate;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public BankAccount getAccount(String number) {
+        for (BankAccount account : bankAccountList) {
+            if (account.getAccountNumber().equals(number)) {
+                return account;
+            }
+        }
+        return null;
+    }
+
     public void addAccount(BankAccount bankAccount) {
         bankAccountList.add(bankAccount);
+    }
+
+    public void addPayment(String payment) {
+        paymentsList.add(payment);
     }
 
     @Override
@@ -28,6 +49,7 @@ public class Person {
                 ", surname='" + surname + '\'' +
                 ", birthDate='" + birthDate + '\'' +
                 ", bankAccountList=" + bankAccountList +
+                ", paymentsList=" + paymentsList +
                 '}';
     }
 
@@ -47,20 +69,4 @@ public class Person {
         return Objects.hash(name, surname, birthDate, bankAccountList);
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public BankAccount getAccount(String number) {
-        for (BankAccount account : bankAccountList) {
-            if (account.getAccountNumber().equals(number)) {
-                return account;
-            }
-        }
-        return null;
-    }
 }
