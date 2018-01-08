@@ -3,6 +3,7 @@ package com.company.Bank.domain;
 
 import com.company.Bank.provider.BankProvider;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -31,19 +32,17 @@ public class BankAccount {
     }
 
     public int deposit(int value) {
-        if (value > 0) {
-            this.accountBalance += value;
-            return accountBalance;
-        }
-        return 0;
+        if (value < 0)
+            throw new IllegalArgumentException("You cant deposit minus value");
+        this.accountBalance += value;
+        return accountBalance;
     }
 
     public int withdraw(int value) {
-        if (value > 0) {
-            this.accountBalance -= value;
-            return accountBalance;
-        }
-        return 0;
+        if (this.accountBalance < 0 || value < 0)
+            throw new IllegalArgumentException("You cant withdraw!");
+        this.accountBalance -= value;
+        return accountBalance;
     }
 
     public void addPayment(Payment payment) {

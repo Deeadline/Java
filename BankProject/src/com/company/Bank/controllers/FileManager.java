@@ -28,61 +28,29 @@ public class FileManager implements IFileManager {
 
     @Override
     public void saveToFile(String path, String contents) throws IOException {
-        PrintWriter printWriter = null;
         try {
-            printWriter = new PrintWriter(new FileWriter(path, true));
+            FileWriter writer = new FileWriter(path,true);
+            PrintWriter printWriter = new PrintWriter(writer);
             printWriter.write(contents + "\r\n");
-        } finally {
-            if (printWriter != null)
-                printWriter.close();
+            printWriter.close();
+        }catch(IOException ex){
+            throw ex;
         }
     }
-
-/*
-    @Override
-    public void updateFile(String path) throws IOException {
-        BufferedReader fileReader = null;
-        PrintWriter fileWriter = null;
-        List<String> lines = new ArrayList<>();
-        try {
-            fileReader = new BufferedReader(new FileReader(path));
-            String line;
-            while ((line = fileReader.readLine()) != null) {
-                if (line.contains("'" + number + "'")) {
-                    String lin = line.substring(line.indexOf("A"), line.lastIndexOf("=") + 1).concat(String.valueOf(value));
-                    lines.add(lin);
-                } else {
-                    lines.add(line);
-                }
-            }
-        } finally {
-            if (fileReader != null)
-                fileReader.close();
-        }
-        try {
-            fileWriter = new PrintWriter(new FileWriter(path));
-            for (String line : lines)
-                fileWriter.write(line + "\r\n");
-        } finally {
-            if (fileWriter != null)
-                fileWriter.close();
-        }
-    }
-*/
 
     @Override
     public List<String> readFromFile(String path) throws IOException {
-        BufferedReader fileReader = null;
         List<String> content = new ArrayList<>();
         try {
-            fileReader = new BufferedReader(new FileReader(path));
+            FileReader reader = new FileReader(path);
+            BufferedReader bufferedReader = new BufferedReader(reader);
             String line;
-            while ((line = fileReader.readLine()) != null) {
+            while ((line = bufferedReader.readLine()) != null) {
                 content.add(line);
             }
-        } finally {
-            if (fileReader != null)
-                fileReader.close();
+            bufferedReader.close();
+        } catch(IOException ex){
+            throw ex;
         }
         return content;
     }

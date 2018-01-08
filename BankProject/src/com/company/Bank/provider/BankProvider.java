@@ -23,10 +23,8 @@ public class BankProvider {
     }
 
     public boolean createNewBank(Swift swiftNumber) {
-        System.out.println("Test in createNewBank: " + getBank(swiftNumber));
         if (getBank(swiftNumber) == null) {
             bankList.add(new Bank(swiftNumber));
-            System.out.println("Test in if != null : " + bankList);
             return true;
         }
         return false;
@@ -49,76 +47,96 @@ public class BankProvider {
     }
 
     public void addUser(Person user) throws IOException {
-        if (!file.isFileExist(user.getSurname() + ".txt"))
-            file.openFile(user.getSurname() + ".txt");
-        file.saveToFile(user.getSurname() + ".txt", user.toString());
-        users.add(user);
+        try {
+            if (users.isEmpty()) {
+                if (!file.isFileExist(user.getSurname() + ".txt"))
+                    file.openFile(user.getSurname() + ".txt");
+                file.saveToFile(user.getSurname() + ".txt", user.toString());
+                users.add(user);
+            } else {
+                users.add(user);
+                updateHistory(user.getSurname(), users.toString());
+            }
+        } catch (IOException ex) {
+            throw ex;
+        }
     }
 
 
     public Boolean addAccount(Person accountUser, Swift swiftNumber) throws IOException {
-        String numbers = new Random().ints().boxed().filter(i -> i >= 0 && i <= 9).limit(18).collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
-        System.out.println(numbers);
-        if (getBank(swiftNumber).getBankAccountList().size() != 0) {
-            for (BankAccount bankAccount : getBank(swiftNumber).getBankAccountList()) {
-                if (bankAccount.getAccountNumber().equals(numbers))
-                    return false;
+        try {
+            String numbers = new Random().ints(0,9).boxed().filter(i -> i >= 0 && i <= 9).limit(18).collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
+            if (getBank(swiftNumber).getBankAccountList().size() != 0) {
+                for (BankAccount bankAccount : getBank(swiftNumber).getBankAccountList()) {
+                    if (bankAccount.getAccountNumber().equals(numbers))
+                        return false;
+                }
             }
-        }
-        BankAccount account = new BankAccount(numbers);
-        accountUser.addAccount(account);
-        getBank(swiftNumber).addAccount(account);
-        getBank(swiftNumber).addPerson(accountUser);
+            BankAccount account = new BankAccount(numbers);
+            accountUser.addAccount(account);
+            getBank(swiftNumber).addAccount(account);
+            getBank(swiftNumber).addPerson(accountUser);
 
-        updateHistory(swiftNumber.toString(), String.valueOf(bankList));
-        updateHistory(accountUser.getSurname(), users.toString());
-        if (!file.isFileExist(account.getAccountNumber() + ".txt"))
-            file.openFile(account.getAccountNumber() + ".txt");
-        file.saveToFile(account.getAccountNumber() + ".txt", account.toString());
-        return true;
+            updateHistory(swiftNumber.toString(), getBank(swiftNumber).toString());
+            updateHistory(accountUser.getSurname(), users.toString());
+            if (!file.isFileExist(account.getAccountNumber() + ".txt"))
+                file.openFile(account.getAccountNumber() + ".txt");
+            file.saveToFile(account.getAccountNumber() + ".txt", account.toString());
+            return true;
+        } catch (IOException ex) {
+            throw ex;
+        }
     }
 
     public void withdraw(String accountNumberFrom, String accountNumberTo, int money, Payment paymentTitle, Swift swiftBankNumber1, Swift swiftBankNumber2) throws IOException {
-        for (Person user : users) {
-            if (user.getAccount(accountNumberFrom) == null) {
-                break;
-            } else {
-                BankAccount firstAccount = user.getAccount(accountNumberFrom);
-                if (firstAccount.getAccountBalance() > 0) {
-                    firstAccount.withdraw(money);
-                    deposit(accountNumberTo, money, paymentTitle, swiftBankNumber2);
-                    if (!file.isFileExist("Payments.txt"))
-                        file.openFile("Payments.txt");
-                    file.saveToFile("Payments.txt", paymentTitle.toString());
-                    user.addPayment(paymentTitle);
-                    getBank(swiftBankNumber1).addPayments(paymentTitle);
-                    user.getAccount(accountNumberFrom).addPayment(paymentTitle);
-                    updateHistory(accountNumberFrom, firstAccount.toString());
-                    updateHistory(user.getSurname(), users.toString());
-                    updateHistory(swiftBankNumber1.toString(), getBank(swiftBankNumber1).getBankAccountList().toString());
-                    return;
+        try {
+            for (Person user : users) {
+                if (user.getAccount(accountNumberFrom) == null) {
+                    break;
+                } else {
+                    BankAccount firstAccount = user.getAccount(accountNumberFrom);
+                    if (firstAccount.getAccountBalance() > 0) {
+                        firstAccount.withdraw(money);
+                        deposit(accountNumberTo, money, paymentTitle, swiftBankNumber2);
+                        if (!file.isFileExist("Payments.txt"))
+                            file.openFile("Payments.txt");
+                        file.saveToFile("Payments.txt", paymentTitle.toString());
+                        user.addPayment(paymentTitle);
+                        getBank(swiftBankNumber1).addPayments(paymentTitle);
+                        user.getAccount(accountNumberFrom).addPayment(paymentTitle);
+                        updateHistory(accountNumberFrom, firstAccount.toString());
+                        updateHistory(user.getSurname(), users.toString());
+                        updateHistory(swiftBankNumber1.toString(), getBank(swiftBankNumber1).getBankAccountList().toString());
+                        return;
+                    }
                 }
             }
+        }catch(IOException ex){
+            throw ex;
         }
     }
 
     public void deposit(String accountNumber, int money, Payment paymentTitle, Swift swiftNumber) throws IOException {
-        for (Person user : users) {
-            if (user.getAccount(accountNumber) == null) {
-                break;
-            } else {
-                user.getAccount(accountNumber).deposit(money);
-                if (!file.isFileExist("Payments.txt"))
-                    file.openFile("Payments.txt");
-                file.saveToFile("Payments.txt", paymentTitle.toString());
-                user.addPayment(paymentTitle);
-                getBank(swiftNumber).addPayments(paymentTitle);
-                user.getAccount(accountNumber).addPayment(paymentTitle);
-                updateHistory(accountNumber, user.getAccount(accountNumber).toString());
-                updateHistory(user.getSurname(), users.toString());
-                updateHistory(swiftNumber.toString(), getBank(swiftNumber).toString());
-                return;
+        try {
+            for (Person user : users) {
+                if (user.getAccount(accountNumber) == null) {
+                    break;
+                } else {
+                    user.getAccount(accountNumber).deposit(money);
+                    if (!file.isFileExist("Payments.txt"))
+                        file.openFile("Payments.txt");
+                    file.saveToFile("Payments.txt", paymentTitle.toString());
+                    user.addPayment(paymentTitle);
+                    getBank(swiftNumber).addPayments(paymentTitle);
+                    user.getAccount(accountNumber).addPayment(paymentTitle);
+                    updateHistory(accountNumber, user.getAccount(accountNumber).toString());
+                    updateHistory(user.getSurname(), users.toString());
+                    updateHistory(swiftNumber.toString(), getBank(swiftNumber).toString());
+                    return;
+                }
             }
+        }catch(IOException ex){
+            throw ex;
         }
     }
 

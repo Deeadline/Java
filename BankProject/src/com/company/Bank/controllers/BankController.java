@@ -115,7 +115,6 @@ public class BankController {
         String birthDate = scanner.next();
         Person person = new Person(name, surname, birthDate);
         bankProvider.addUser(person);
-
     }
 
     private void createAccount() throws IOException {
@@ -291,6 +290,7 @@ public class BankController {
             if (bank.getBankAccountList().isEmpty())
                 throw new IllegalArgumentException("You don't have accounts!");
         }
+        i=0;
         System.out.println("Which account do you want to view?");
         for (Bank bank : bankProvider.getAllBanks()) {
             System.out.println(i + ". " + bank.getSwiftNumber());
