@@ -3,7 +3,10 @@ package com.company.Bank.domain;
 public class Payment {
     private String title;
 
-    public Payment(String title) {
+    public Payment() {
+    }
+
+    public void setTitle(String title) {
         this.title = title;
     }
 

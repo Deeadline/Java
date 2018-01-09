@@ -25,13 +25,8 @@ public class Person {
         return surname;
     }
 
-    public BankAccount getAccount(String number) {
-        for (BankAccount account : bankAccountList) {
-            if (account.getAccountNumber().equals(number)) {
-                return account;
-            }
-        }
-        return null;
+    public List<BankAccount> getAccount() {
+        return bankAccountList;
     }
 
     public void addAccount(BankAccount bankAccount) {

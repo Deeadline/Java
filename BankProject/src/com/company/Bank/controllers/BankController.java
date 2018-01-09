@@ -157,16 +157,16 @@ public class BankController {
             System.out.println(i + ". " + account.getAccountNumber());
             i++;
         }
-        System.out.println("Whereof account do you want withdraw? ");
+        System.out.println("Whereof account do you want Withdraw? ");
         secondChoice = scanner.nextInt();
-        System.out.println("To which account do you want deposit? ");
+        System.out.println("To which account do you want Deposit? ");
         i = 0;
         for (BankAccount account : bankProvider.getAllBanks().get(firstChoice).getBankAccountList()) {
             System.out.println(i + ". " + account.getAccountNumber());
             i++;
         }
         thirdChoice = scanner.nextInt();
-        System.out.println("How much money do you want withdraw? ");
+        System.out.println("How much money do you want Withdraw? ");
         money = scanner.nextInt();
         swiftNumber1 = bankProvider.getAllBanks().get(firstChoice).getSwiftNumber();
         swiftNumber2 = bankProvider.getAllBanks().get(secondChoice).getSwiftNumber();
@@ -194,9 +194,9 @@ public class BankController {
             System.out.println(i + ". " + account.getAccountNumber());
             i++;
         }
-        System.out.println("To which account do you want deposit? ");
+        System.out.println("To which account do you want Deposit? ");
         secondChoice = scanner.nextInt();
-        System.out.println("How much money do you want deposit? ");
+        System.out.println("How much money do you want Deposit? ");
         money = scanner.nextInt();
         to = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber();
         paymentTitle = "Payment to " + bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(secondChoice).getAccountNumber() + " cash: " + money + " Date: " + LocalDate.now();
@@ -209,13 +209,13 @@ public class BankController {
         if (bankProvider.getAllBanks().isEmpty())
             throw new IllegalArgumentException("You don't have banks!");
         i = 0;
-        System.out.println("Which bank account do you want use to withdraw? ");
+        System.out.println("Which bank account do you want use to Withdraw? ");
         for (Bank bank : bankProvider.getAllBanks()) {
             System.out.println(i + ". " + bank.getSwiftNumber().toString());
             i++;
         }
         firstChoice = scanner.nextInt();
-        System.out.println("Which bank account do you want use to deposit? ");
+        System.out.println("Which bank account do you want use to Deposit? ");
         i = 0;
         for (Bank bank : bankProvider.getAllBanks()) {
             System.out.println(i + ". " + bank.getSwiftNumber().toString());
@@ -230,7 +230,7 @@ public class BankController {
             System.out.println(i + ". " + account.getAccountNumber());
             i++;
         }
-        System.out.println("Whereof account do you want withdraw? ");
+        System.out.println("Whereof account do you want Withdraw? ");
         thirdChoice = scanner.nextInt();
         i = 0;
         System.out.println(bankProvider.getAllBanks().get(secondChoice).getSwiftNumber().toString() + ":");
@@ -238,9 +238,9 @@ public class BankController {
             System.out.println(i + ". " + account.getAccountNumber());
             i++;
         }
-        System.out.println("To which account do you want deposit? ");
+        System.out.println("To which account do you want Deposit? ");
         int fourthChoice = scanner.nextInt();
-        System.out.println("How much money do you want withdraw? ");
+        System.out.println("How much money do you want Withdraw? ");
         money = scanner.nextInt();
         from = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(thirdChoice).getAccountNumber();
         to = bankProvider.getAllBanks().get(secondChoice).getBankAccountList().get(fourthChoice).getAccountNumber();

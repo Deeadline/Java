@@ -9,5 +9,7 @@ public class Main {
         do {
 
         } while (bankController.bankMenu());
+
+        /*Klasa transfer, po której dziedziczy Wpłac, wypłać, wypłać międzynarodowo, Zamiast println dać log4j, zredukować liczbę ifów i forów.*/
     }
 }

@@ -33,14 +33,14 @@ public class BankAccount {
 
     public int deposit(int value) {
         if (value < 0)
-            throw new IllegalArgumentException("You cant deposit minus value");
+            throw new IllegalArgumentException("You cant Deposit minus value");
         this.accountBalance += value;
         return accountBalance;
     }
 
     public int withdraw(int value) {
         if (this.accountBalance < 0 || value < 0)
-            throw new IllegalArgumentException("You cant withdraw!");
+            throw new IllegalArgumentException("You cant Withdraw!");
         this.accountBalance -= value;
         return accountBalance;
     }

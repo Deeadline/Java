@@ -12,8 +12,6 @@ public interface IFileManager {
 
     void saveToFile(String path, String contents) throws IOException;
 
-//    void updateFile(String path) throws IOException;
-
     List<String> readFromFile(String path) throws IOException;
 
 }

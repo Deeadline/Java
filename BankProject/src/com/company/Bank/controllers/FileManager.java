@@ -7,7 +7,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager implements IFileManager {
+    private static FileManager file;
 
+    private FileManager(){
+    }
+    public static FileManager getFile() {
+        if (file == null) {
+            file = new FileManager();
+        }
+        return file;
+    }
     @Override
     public boolean removeFile(String path) {
         File file = new File(path);
