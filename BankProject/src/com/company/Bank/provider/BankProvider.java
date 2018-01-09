@@ -48,9 +48,9 @@ public class BankProvider {
         return users;
     }
 
-    public Person getUser(BankAccount account){
-        for(Person user : users){
-            if(user.getAccount().contains(account))
+    public Person getUser(BankAccount account) {
+        for (Person user : users) {
+            if (user.getAccount().contains(account))
                 return user;
         }
         return null;
@@ -98,12 +98,12 @@ public class BankProvider {
         }
     }
 
-    public void withdraw(BankAccount account, int money, Payment paymentTitle, Swift swiftNumber) throws IOException {
+    public void cashWithdrawer(BankAccount account, int money, Payment paymentTitle, Swift swiftNumber) throws IOException {
         Withdraw transfer = new Withdraw();
-        transfer.cashWithdrawer(account, money, paymentTitle.toString(),swiftNumber);
+        transfer.cashWithdrawer(account, money, paymentTitle.toString(), swiftNumber);
     }
 
-    public void withdraw(BankAccount firstAccount, BankAccount secondAccount, int money, Payment paymentTitle, Swift swiftNumber) throws IOException {
+    public void transferWithdrawer(BankAccount firstAccount, BankAccount secondAccount, int money, Payment paymentTitle, Swift swiftNumber) throws IOException {
         Withdraw transfer = new Withdraw();
         transfer.transferWithdrawer(firstAccount, secondAccount, money, paymentTitle.toString(), swiftNumber);
     }
