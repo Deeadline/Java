@@ -1,9 +1,9 @@
-package main.java.com.company.Bank.transactions;
+package com.company.Bank.transactions;
 
-import main.java.com.company.Bank.controllers.FileManager;
-import main.java.com.company.Bank.domain.BankAccount;
-import main.java.com.company.Bank.domain.Swift;
-import main.java.com.company.Bank.provider.BankProvider;
+import com.company.Bank.controllers.FileManager;
+import com.company.Bank.domain.BankAccount;
+import com.company.Bank.domain.Swift;
+import com.company.Bank.provider.BankProvider;
 
 import java.io.IOException;
 

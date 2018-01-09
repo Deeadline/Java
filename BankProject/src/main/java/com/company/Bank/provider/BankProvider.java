@@ -1,10 +1,11 @@
-package main.java.com.company.Bank.provider;
+package com.company.Bank.provider;
 
-import main.java.com.company.Bank.controllers.FileManager;
-import main.java.com.company.Bank.domain.*;
-import main.java.com.company.Bank.transactions.Deposit;
-import main.java.com.company.Bank.transactions.InternationalTransfer;
-import main.java.com.company.Bank.transactions.Withdraw;
+
+import com.company.Bank.controllers.FileManager;
+import com.company.Bank.domain.*;
+import com.company.Bank.transactions.Deposit;
+import com.company.Bank.transactions.InternationalTransfer;
+import com.company.Bank.transactions.Withdraw;
 
 import java.io.IOException;
 import java.util.*;

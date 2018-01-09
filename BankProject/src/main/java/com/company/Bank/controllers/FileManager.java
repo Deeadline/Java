@@ -1,6 +1,6 @@
-package main.java.com.company.Bank.controllers;
+package com.company.Bank.controllers;
 
-import main.java.com.company.Bank.implement.IFileManager;
+import com.company.Bank.implement.IFileManager;
 
 import java.io.*;
 import java.util.ArrayList;

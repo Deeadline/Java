@@ -1,14 +1,14 @@
 package main.java;
 
 
-import main.java.com.company.Bank.controllers.BankController;
-import org.apache.log4j.PropertyConfigurator;
+import com.company.Bank.controllers.BankController;
+import org.apache.log4j.xml.DOMConfigurator;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        PropertyConfigurator.configure("E:\\Repozytoria\\Java\\BankProject\\src\\main\\resources\\log4j.properties");
+        DOMConfigurator.configure("E:\\Repozytoria\\Java\\BankProject\\src\\main\\resources\\log4j.xml");
         BankController bankController = BankController.getInstance();
             do {
 

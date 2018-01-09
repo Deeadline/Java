@@ -1,6 +1,7 @@
-package main.java.com.company.Bank.domain;
+package com.company.Bank.domain;
 
-import main.java.com.company.Bank.provider.BankProvider;
+
+import com.company.Bank.provider.BankProvider;
 
 import java.util.ArrayList;
 import java.util.List;

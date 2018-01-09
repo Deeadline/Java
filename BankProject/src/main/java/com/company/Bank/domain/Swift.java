@@ -1,4 +1,4 @@
-package main.java.com.company.Bank.domain;
+package com.company.Bank.domain;
 
 public enum Swift {
     BREXPLPWMUL("MBank"),

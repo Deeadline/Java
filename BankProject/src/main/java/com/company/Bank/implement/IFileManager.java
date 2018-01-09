@@ -1,4 +1,4 @@
-package main.java.com.company.Bank.implement;
+package com.company.Bank.implement;
 
 import java.io.IOException;
 import java.util.List;

@@ -1,4 +1,4 @@
-package main.java.com.company.Bank.domain;
+package com.company.Bank.domain;
 
 public class Payment {
     private String title;

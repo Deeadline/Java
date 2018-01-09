@@ -1,8 +1,8 @@
-package main.java.com.company.Bank.controllers;
+package com.company.Bank.controllers;
 
 
-import main.java.com.company.Bank.domain.*;
-import main.java.com.company.Bank.provider.BankProvider;
+import com.company.Bank.domain.*;
+import com.company.Bank.provider.BankProvider;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;

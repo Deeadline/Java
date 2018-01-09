@@ -1,6 +1,6 @@
-package main.java.com.company.Bank.transactions;
+package com.company.Bank.transactions;
 
-import main.java.com.company.Bank.domain.Payment;
+import com.company.Bank.domain.Payment;
 
 public class Transaction {
     private final Payment payment = new Payment();
