@@ -5,7 +5,6 @@ import main.java.com.company.Bank.domain.*;
 import main.java.com.company.Bank.provider.BankProvider;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Scanner;
 
@@ -20,6 +19,7 @@ public class BankController {
     private int fourthChoice;
     private int money;
     private int i;
+    private int userChoice;
     private final Scanner scanner = new Scanner(System.in);
     private final Payment payment = new Payment();
     private BankAccount from;
@@ -40,24 +40,29 @@ public class BankController {
     }
 
     public boolean bankMenu() {
-        logger.info("0. Create bank");
-        logger.info("1. Create person");
-        logger.info("2. Create account");
-        logger.info("3. Withdraw cash from account");
-        logger.info("4. Withdraw cash to other account");
-        logger.info("5. Deposit cash");
-        logger.info("6. International transaction");
-        logger.info("7. Show bank details");
-        logger.info("8. Show user details");
-        logger.info("9. Show account details");
-        logger.info("10. Show payments history");
-        logger.info("11. To quit: \n");
-        logger.info("Enter your choice: ");
-        int userChoice = scanner.nextInt();
-        if (userChoice == 11)
-            return false;
-        doSomething(userChoice);
-        return true;
+            logger.info("0. Create bank");
+            logger.info("1. Create person");
+            logger.info("2. Create account");
+            logger.info("3. Withdraw cash from account");
+            logger.info("4. Withdraw cash to other account");
+            logger.info("5. Deposit cash");
+            logger.info("6. International transaction");
+            logger.info("7. Show bank details");
+            logger.info("8. Show user details");
+            logger.info("9. Show account details");
+            logger.info("10. Show payments history");
+            logger.info("11. To quit: \n");
+            logger.info("Enter your choice: ");
+        try {
+            userChoice = scanner.nextInt();
+            if (userChoice == 11)
+                return false;
+            doSomething(userChoice);
+        } catch (Exception ex) {
+            logger.error("Sorry, something wrong: ", ex);
+            System.exit(-1);
+        }
+            return true;
     }
 
     private void doSomething(int userChoice) {
@@ -126,7 +131,7 @@ public class BankController {
             String birthDate = scanner.next();
             Person person = new Person(name, surname, birthDate);
             bankProvider.addUser(person);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
@@ -147,13 +152,13 @@ public class BankController {
             secondChoice = scanner.nextInt();
             if (bankProvider.addAccount(bankProvider.getUsers().get(secondChoice), bankProvider.getAllBanks().get(firstChoice).getSwiftNumber()))
                 logger.info("An account has been created.");
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
 
     private void cashWithdrawer() {
-        if(bankProvider.getAllBanks().isEmpty())
+        if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
             i = 0;
@@ -175,13 +180,13 @@ public class BankController {
             to = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(thirdChoice);
             payment.setTitle("Withdraw from " + swiftNumber1.toString() + " :\n" + from.getAccountNumber() + " \ncash: " + money + " \nDate: " + LocalDate.now());
             bankProvider.cashWithdrawer(from, money, payment, swiftNumber1);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
 
     private void transferWithdrawer() {
-        if(bankProvider.getAllBanks().isEmpty())
+        if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
             i = 0;
@@ -211,13 +216,13 @@ public class BankController {
             to = bankProvider.getAllBanks().get(firstChoice).getBankAccountList().get(thirdChoice);
             payment.setTitle(title + "\nwithdraw from " + swiftNumber1.toString() + " : \n" + from.getAccountNumber() + " to: \n" + to.getAccountNumber() + " \ncash: " + money + " \nDate: " + LocalDate.now());
             bankProvider.transferWithdrawer(from, to, money, payment, swiftNumber1);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
 
     private void deposit() {
-        if(bankProvider.getAllBanks().isEmpty())
+        if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
             i = 0;
@@ -239,13 +244,13 @@ public class BankController {
             swiftNumber1 = bankProvider.getAllBanks().get(firstChoice).getSwiftNumber();
             payment.setTitle("Deposit to " + swiftNumber1.toString() + " : " + to.getAccountNumber() + " \ncash: " + money + " \nDate: " + LocalDate.now());
             bankProvider.deposit(to, money, payment, swiftNumber1);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
 
     private void internationalTransfer() {
-        if(bankProvider.getAllBanks().isEmpty())
+        if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
             i = 0;
@@ -285,13 +290,13 @@ public class BankController {
             swiftNumber2 = bankProvider.getAllBanks().get(secondChoice).getSwiftNumber();
             payment.setTitle(title + "\nTransfer from " + swiftNumber1.toString() + " : " + from.getAccountNumber() + " to " + "\n" + swiftNumber2.toString() + " : " + to.getAccountNumber() + "\n cash: " + money + " \nDate: " + LocalDate.now());
             bankProvider.internationalTransfer(swiftNumber1, swiftNumber2, payment, money, from, to);
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
 
     private void bankDetails() {
-        if(bankProvider.getAllBanks().isEmpty())
+        if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
             i = 0;
@@ -304,13 +309,13 @@ public class BankController {
             for (String content : bankProvider.readBankHistory(swiftNumber1.toString())) {
                 logger.info(content);
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
 
     private void userDetails() {
-        if(bankProvider.getUsers().isEmpty())
+        if (bankProvider.getUsers().isEmpty())
             throw new NullPointerException("You don't have persons!");
         try {
             logger.info("Which person do you want to view? ");
@@ -324,13 +329,13 @@ public class BankController {
             for (String content : bankProvider.readClientHistory(surname)) {
                 logger.info(content);
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
 
     private void accountDetails() {
-        if(bankProvider.getAllBanks().isEmpty())
+        if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
             i = 0;
@@ -351,7 +356,7 @@ public class BankController {
             for (String content : bankProvider.readAccountHistory(accountNumber)) {
                 System.out.println(content);
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
@@ -362,7 +367,7 @@ public class BankController {
             for (String content : bankProvider.readPaymentsHistory()) {
                 logger.info(content);
             }
-        } catch (IOException ex) {
+        } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
     }
