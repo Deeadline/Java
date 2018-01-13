@@ -1,13 +1,13 @@
-package com.company.Bank.domain;
+package com.company.bank.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class Person {
-    private String name;
-    private String surname;
-    private String birthDate;
+    private final String name;
+    private final String surname;
+    private final String birthDate;
     private final List<BankAccount> bankAccountList = new ArrayList<>();
     private final List<Payment> paymentsList = new ArrayList<>();
 

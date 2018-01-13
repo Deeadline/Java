@@ -1,53 +1,48 @@
-package com.company.Bank.controllers;
-
-import com.company.Bank.implement.IFileManager;
+package com.company.bank.controllers;
 
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileManager implements IFileManager {
+public class FileManager {
     private static FileManager file;
 
-    private FileManager(){
+    private FileManager() {
     }
+
     public static FileManager getFile() {
         if (file == null) {
             file = new FileManager();
         }
         return file;
     }
-    @Override
+
     public boolean removeFile(String path) {
         File file = new File(path);
         return file.delete();
     }
 
-    @Override
     public boolean isFileExist(String path) {
         File file = new File(path);
         return file.exists() && file.isFile();
     }
 
-    @Override
     public void openFile(String path) throws IOException {
         File file = new File(path);
         file.createNewFile();
     }
 
-    @Override
     public void saveToFile(String path, String contents) throws IOException {
         try {
-            FileWriter writer = new FileWriter(path,true);
+            FileWriter writer = new FileWriter(path, true);
             PrintWriter printWriter = new PrintWriter(writer);
             printWriter.write(contents + "\r\n");
             printWriter.close();
-        }catch(IOException ex){
+        } catch (IOException ex) {
             throw ex;
         }
     }
 
-    @Override
     public List<String> readFromFile(String path) throws IOException {
         List<String> content = new ArrayList<>();
         try {
@@ -58,7 +53,7 @@ public class FileManager implements IFileManager {
                 content.add(line);
             }
             bufferedReader.close();
-        } catch(IOException ex){
+        } catch (IOException ex) {
             throw ex;
         }
         return content;

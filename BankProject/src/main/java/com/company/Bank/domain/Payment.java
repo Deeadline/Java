@@ -1,13 +1,15 @@
-package com.company.Bank.domain;
+package com.company.bank.domain;
 
 public class Payment {
-    private String title;
+    private final String title;
+    private static final String paymentFile = "Payments.txt";
 
-    public Payment() {
+    public Payment(String title) {
+        this.title = title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public static String getPaymentFile(){
+        return  paymentFile;
     }
 
     @Override

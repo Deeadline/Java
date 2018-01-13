@@ -1,14 +1,13 @@
-package com.company.Bank.domain;
+package com.company.bank.domain;
 
-
-import com.company.Bank.provider.BankProvider;
+import com.company.bank.provider.BankProvider;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class BankAccount {
-    private String bankAccountNumber;
+    private final String bankAccountNumber;
     private int accountBalance = 0;
     private final List<Payment> paymentsList = new ArrayList<>();
 

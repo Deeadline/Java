@@ -1,4 +1,4 @@
-package com.company.Bank.domain;
+package com.company.bank.domain;
 
 public enum Swift {
     BREXPLPWMUL("MBank"),

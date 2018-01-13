@@ -3,7 +3,7 @@
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="true">
 
     <appender name="info-out" class="org.apache.log4j.FileAppender">
-        <param name="File" value="E:/Repozytoria/Java/BankProject/logs/info.log"/>
+        <param name="File" value="D:/Java/BankProject/logs/info.log"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%m%n"/>
         </layout>
@@ -16,7 +16,7 @@
 
     <appender name="error-out" class="org.apache.log4j.FileAppender">
         <param name="Append" value="false"/>
-        <param name="File" value="E:/Repozytoria/Java/BankProject/logs/error.log"/>
+        <param name="File" value="D:/Java/BankProject/logs/error.log"/>
         <layout class="org.apache.log4j.PatternLayout">
             <param name="ConversionPattern" value="%m%n"/>
         </layout>

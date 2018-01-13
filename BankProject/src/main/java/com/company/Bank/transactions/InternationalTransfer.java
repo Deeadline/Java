@@ -1,32 +1,29 @@
-package com.company.Bank.transactions;
+package com.company.bank.transactions;
 
-import com.company.Bank.controllers.FileManager;
-import com.company.Bank.domain.BankAccount;
-import com.company.Bank.domain.Swift;
-import com.company.Bank.provider.BankProvider;
+import com.company.bank.controllers.FileManager;
+import com.company.bank.domain.BankAccount;
+import com.company.bank.domain.Payment;
+import com.company.bank.domain.Swift;
+import com.company.bank.provider.BankProvider;
 
 import java.io.IOException;
 
-public class InternationalTransfer extends Transaction {
-    public InternationalTransfer() {
-        super();
-    }
+public class InternationalTransfer {
 
-    public void internationalTransfer(Swift swiftNumberFirstBank, Swift swiftNumberSecondBank, String title, int money, BankAccount firstAccount, BankAccount secondAccount) throws IllegalArgumentException, IOException {
+    public void internationalTransfer(Swift swiftNumberFirstBank, Swift swiftNumberSecondBank, Payment paymentTitle, int money, BankAccount firstAccount, BankAccount secondAccount) throws IllegalArgumentException, IOException {
         if (BankProvider.getBankProviderInstance().getBank(swiftNumberFirstBank).getBankAccountList().contains(firstAccount)) {
             if (BankProvider.getBankProviderInstance().getBank(swiftNumberSecondBank).getBankAccountList().contains(secondAccount)) {
                 firstAccount.withdraw(money);
                 secondAccount.deposit(money);
-                setPayment(title);
-                BankProvider.getBankProviderInstance().getBank(swiftNumberFirstBank).addPayments(getPayment());
-                BankProvider.getBankProviderInstance().getBank(swiftNumberSecondBank).addPayments(getPayment());
-                BankProvider.getBankProviderInstance().getUser(firstAccount).addPayment(getPayment());
-                BankProvider.getBankProviderInstance().getUser(secondAccount).addPayment(getPayment());
-                firstAccount.addPayment(getPayment());
-                secondAccount.addPayment(getPayment());
-                if (!FileManager.getFile().isFileExist("Payments.txt"))
-                    FileManager.getFile().openFile("Payments.txt");
-                FileManager.getFile().saveToFile("Payments.txt", getPayment().toString());
+                BankProvider.getBankProviderInstance().getBank(swiftNumberFirstBank).addPayments(paymentTitle);
+                BankProvider.getBankProviderInstance().getBank(swiftNumberSecondBank).addPayments(paymentTitle);
+                BankProvider.getBankProviderInstance().getUser(firstAccount).addPayment(paymentTitle);
+                BankProvider.getBankProviderInstance().getUser(secondAccount).addPayment(paymentTitle);
+                firstAccount.addPayment(paymentTitle);
+                secondAccount.addPayment(paymentTitle);
+                if (!FileManager.getFile().isFileExist(Payment.getPaymentFile()))
+                    FileManager.getFile().openFile(Payment.getPaymentFile());
+                FileManager.getFile().saveToFile(Payment.getPaymentFile(), paymentTitle.toString());
                 BankProvider.getBankProviderInstance().updateHistory(firstAccount.getAccountNumber(), firstAccount.toString());
                 BankProvider.getBankProviderInstance().updateHistory(secondAccount.getAccountNumber(), secondAccount.toString());
                 BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(firstAccount).getSurname(), firstAccount.toString());
