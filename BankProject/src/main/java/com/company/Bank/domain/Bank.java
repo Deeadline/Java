@@ -1,14 +1,17 @@
 package com.company.bank.domain;
 
 import com.company.bank.provider.BankProvider;
+import com.company.bank.transactions.Transfer;
 
-import java.util.*;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class Bank {
     private final Swift swiftNumber;
     private final List<BankAccount> bankAccountList = new ArrayList<>();
     private final List<Person> personList = new ArrayList<>();
-    private final List<Payment> paymentsList = new ArrayList<>();
+    private final List<Transfer> paymentsList = new ArrayList<>();
 
     public Bank(Swift swiftNumber) {
         if (BankProvider.getBankProviderInstance().getBank(swiftNumber) != null)
@@ -32,8 +35,8 @@ public class Bank {
         personList.add(person);
     }
 
-    public void addPayments(Payment paymentTitle) {
-        paymentsList.add(paymentTitle);
+    public void addPayments(Transfer transfer) {
+        paymentsList.add(transfer);
     }
 
     @Override

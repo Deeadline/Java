@@ -1,5 +1,7 @@
 package com.company.bank.domain;
 
+import com.company.bank.transactions.Transfer;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,7 +11,7 @@ public class Person {
     private final String surname;
     private final String birthDate;
     private final List<BankAccount> bankAccountList = new ArrayList<>();
-    private final List<Payment> paymentsList = new ArrayList<>();
+    private final List<Transfer> paymentsList = new ArrayList<>();
 
     public Person(String name, String surname, String birthDate) {
         this.name = name;
@@ -33,8 +35,8 @@ public class Person {
         bankAccountList.add(bankAccount);
     }
 
-    public void addPayment(Payment payment) {
-        paymentsList.add(payment);
+    public void addPayment(Transfer transfer) {
+        paymentsList.add(transfer);
     }
 
     @Override
