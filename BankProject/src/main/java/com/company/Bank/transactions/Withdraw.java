@@ -2,42 +2,44 @@ package com.company.bank.transactions;
 
 import com.company.bank.controllers.FileManager;
 import com.company.bank.domain.BankAccount;
-import com.company.bank.domain.Payment;
 import com.company.bank.domain.Swift;
 import com.company.bank.provider.BankProvider;
 
 import java.io.IOException;
 
-public class Withdraw {
+public class Withdraw implements Transfer {
+    private final BankAccount account;
+    private final int cash;
+    private final String title = "Withdraw from : ";
+    private final Swift bankSwiftNumber;
 
-    public void cashWithdrawer(BankAccount account, int money, Payment paymentTitle, Swift swiftNumber) throws IOException {
-        account.withdraw(money);
-        BankProvider.getBankProviderInstance().getBank(swiftNumber).addPayments(paymentTitle);
-        BankProvider.getBankProviderInstance().getUser(account).addPayment(paymentTitle);
-        account.addPayment(paymentTitle);
-        if (!FileManager.getFile().isFileExist(Payment.getPaymentFile()))
-            FileManager.getFile().openFile(Payment.getPaymentFile());
-        FileManager.getFile().saveToFile(Payment.getPaymentFile(), paymentTitle.toString());
-        BankProvider.getBankProviderInstance().updateHistory(account.getAccountNumber(), account.toString());
-        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(account).getSurname(), account.toString());
-        BankProvider.getBankProviderInstance().updateHistory(swiftNumber.toString(), BankProvider.getBankProviderInstance().getBank(swiftNumber).toString());
+    public Withdraw(BankAccount account, int cash, Swift bankSwiftNumber) {
+        this.account = account;
+        this.cash = cash;
+        this.bankSwiftNumber = bankSwiftNumber;
     }
 
-    public void transferWithdrawer(BankAccount firstAccount, BankAccount secondAccount, int money, Payment paymentTitle, Swift firstSwiftNumber) throws IOException {
-        firstAccount.withdraw(money);
-        secondAccount.deposit(money);
-        BankProvider.getBankProviderInstance().getBank(firstSwiftNumber).addPayments(paymentTitle);
-        BankProvider.getBankProviderInstance().getUser(firstAccount).addPayment(paymentTitle);
-        BankProvider.getBankProviderInstance().getUser(secondAccount).addPayment(paymentTitle);
-        firstAccount.addPayment(paymentTitle);
-        secondAccount.addPayment(paymentTitle);
-        if (!FileManager.getFile().isFileExist(Payment.getPaymentFile()))
-            FileManager.getFile().openFile(Payment.getPaymentFile());
-        FileManager.getFile().saveToFile(Payment.getPaymentFile(), paymentTitle.toString());
-        BankProvider.getBankProviderInstance().updateHistory(firstAccount.getAccountNumber(), firstAccount.toString());
-        BankProvider.getBankProviderInstance().updateHistory(secondAccount.getAccountNumber(), secondAccount.toString());
-        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(firstAccount).getSurname(), firstAccount.toString());
-        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(secondAccount).getSurname(), secondAccount.toString());
-        BankProvider.getBankProviderInstance().updateHistory(firstSwiftNumber.toString(), BankProvider.getBankProviderInstance().getBank(firstSwiftNumber).toString());
+    @Override
+    public void execute() throws IOException {
+        account.withdraw(cash);
+        BankProvider.getBankProviderInstance().getBank(bankSwiftNumber).addPayments(this);
+        BankProvider.getBankProviderInstance().getUser(account).addPayment(this);
+        account.addPayment(this);
+        if (!FileManager.getFile().isFileExist("Payments.txt"))
+            FileManager.getFile().openFile("Payments.txt");
+        FileManager.getFile().saveToFile("Payments.txt", this.toString());
+        BankProvider.getBankProviderInstance().updateHistory(account.getAccountNumber(), account.toString());
+        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(account).getSurname(), account.toString());
+        BankProvider.getBankProviderInstance().updateHistory(bankSwiftNumber.toString(), BankProvider.getBankProviderInstance().getBank(bankSwiftNumber).toString());
+    }
+
+    @Override
+    public String toString() {
+        return "Withdraw{" +
+                "title='" + title + '\'' +
+                ", account=" + account +
+                ", cash=" + cash +
+                ", bankSwiftNumber=" + bankSwiftNumber +
+                '}';
     }
 }

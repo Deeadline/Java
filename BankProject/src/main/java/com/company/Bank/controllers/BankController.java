@@ -2,7 +2,6 @@ package com.company.bank.controllers;
 
 import com.company.bank.domain.Bank;
 import com.company.bank.domain.BankAccount;
-import com.company.bank.domain.Payment;
 import com.company.bank.domain.Person;
 import com.company.bank.domain.Swift;
 import com.company.bank.provider.BankProvider;
@@ -29,25 +28,26 @@ public class BankController {
         return instance;
     }
 
-    static{
-        DOMConfigurator.configure("D:\\Java\\BankProject\\src\\main\\resources\\log4j.xml");
+    static {
+        DOMConfigurator.configure("src\\main\\resources\\log4j.xml");
     }
+
     public boolean bankMenu() {
-            logger.info("0. Create bank");
-            logger.info("1. Create person");
-            logger.info("2. Create account");
-            logger.info("3. Withdraw cash from account");
-            logger.info("4. Withdraw cash to other account");
-            logger.info("5. Deposit cash");
-            logger.info("6. International transaction");
-            logger.info("7. Show bank details");
-            logger.info("8. Show user details");
-            logger.info("9. Show account details");
-            logger.info("10. Show payments history");
-            logger.info("11. To quit: \n");
-            logger.info("Enter your choice: ");
+        logger.info("0. Create bank");
+        logger.info("1. Create person");
+        logger.info("2. Create account");
+        logger.info("3. Withdraw cash from account");
+        logger.info("4. Withdraw cash to other account");
+        logger.info("5. Deposit cash");
+        logger.info("6. International transaction");
+        logger.info("7. Show bank details");
+        logger.info("8. Show user details");
+        logger.info("9. Show account details");
+        logger.info("10. Show payments history");
+        logger.info("11. To quit: \n");
+        logger.info("Enter your choice: ");
         try {
-           int userChoice = scanner.nextInt();
+            int userChoice = scanner.nextInt();
             if (userChoice == 11)
                 return false;
             doSomething(userChoice);
@@ -55,7 +55,7 @@ public class BankController {
             logger.error("Sorry, something wrong: ", ex);
             System.exit(-1);
         }
-            return true;
+        return true;
     }
 
     private void doSomething(int userChoice) {
@@ -154,8 +154,8 @@ public class BankController {
         if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
-            int i=0;
-            System.out.println("Which bank account do you want use? ");
+            int i = 0;
+            System.out.println("Which bank do you want use to transfer? ");
             for (Bank bank : bankProvider.getAllBanks()) {
                 logger.info(i++ + ". " + bank.getSwiftNumber().toString());
             }
@@ -164,14 +164,13 @@ public class BankController {
             for (BankAccount account : bankProvider.getAllBanks().get(bankChoice).getBankAccountList()) {
                 logger.info(i++ + ". " + account.getAccountNumber());
             }
-            logger.info("Whereof account do you want withdraw? ");
+            logger.info("Whereof account do you want to withdraw? ");
             int accountChoice = scanner.nextInt();
-            logger.info("How much money do you want withdraw? ");
-            int money = scanner.nextInt();
+            logger.info("How much cash do you want to withdraw? ");
+            int cash = scanner.nextInt();
             Swift bankSwiftNumber = bankProvider.getAllBanks().get(bankChoice).getSwiftNumber();
             BankAccount withdrawFrom = bankProvider.getAllBanks().get(bankChoice).getBankAccountList().get(accountChoice);
-            Payment payment = new Payment("Withdraw from " + bankSwiftNumber.toString() + " :\n" + withdrawFrom.getAccountNumber() + " \ncash: " + money + " \nDate: " + LocalDate.now());
-            bankProvider.cashWithdrawer(withdrawFrom, money, payment, bankSwiftNumber);
+            bankProvider.cashWithdrawer(withdrawFrom, cash, bankSwiftNumber);
         } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
@@ -182,7 +181,7 @@ public class BankController {
             throw new NullPointerException("You don't have banks!");
         try {
             int i = 0;
-            System.out.println("Which bank account do you want use? ");
+            System.out.println("Which bank do you want use to transfer? ");
             for (Bank bank : bankProvider.getAllBanks()) {
                 logger.info(i++ + ". " + bank.getSwiftNumber().toString());
             }
@@ -191,23 +190,22 @@ public class BankController {
             for (BankAccount account : bankProvider.getAllBanks().get(bankChoice).getBankAccountList()) {
                 logger.info(i++ + ". " + account.getAccountNumber());
             }
-            logger.info("Whereof account do you want transfer? ");
+            logger.info("Whereof account do you want to transfer? ");
             int firstAccountChoice = scanner.nextInt();
             i = 0;
             for (BankAccount account : bankProvider.getAllBanks().get(bankChoice).getBankAccountList()) {
                 logger.info(i++ + ". " + account.getAccountNumber());
             }
-            logger.info("To which account do you want transfer?");
+            logger.info("To which account do you want transfer to ?");
             int secondAccountChoice = scanner.nextInt();
-            logger.info("How much money do you want transfer? ");
+            logger.info("How much money do you want transfer to? ");
             int money = scanner.nextInt();
             logger.info("Please provide title: ");
             String title = scanner.nextLine();
             Swift bankSwiftNumber = bankProvider.getAllBanks().get(bankChoice).getSwiftNumber();
             BankAccount transferFrom = bankProvider.getAllBanks().get(bankChoice).getBankAccountList().get(firstAccountChoice);
             BankAccount transferTo = bankProvider.getAllBanks().get(bankChoice).getBankAccountList().get(secondAccountChoice);
-            Payment payment = new Payment(title + "\nwithdraw from " + bankSwiftNumber.toString() + " : \n" + transferFrom.getAccountNumber() + " to: \n" + transferTo.getAccountNumber() + " \ncash: " + money + " \nDate: " + LocalDate.now());
-            bankProvider.transferWithdrawer(transferFrom, transferTo, money, payment, bankSwiftNumber);
+            bankProvider.transferWithdrawer(transferFrom, transferTo, money, title, bankSwiftNumber);
         } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
@@ -218,7 +216,7 @@ public class BankController {
             throw new NullPointerException("You don't have banks!");
         try {
             int i = 0;
-            logger.info("Which bank account do you want use? ");
+            logger.info("Which bank account do you want use to deposit? ");
             for (Bank bank : bankProvider.getAllBanks()) {
                 logger.info(i++ + ". " + bank.getSwiftNumber().toString());
             }
@@ -228,14 +226,13 @@ public class BankController {
             for (BankAccount account : bankProvider.getAllBanks().get(bankChoice).getBankAccountList()) {
                 logger.info(i++ + ". " + account.getAccountNumber());
             }
-            logger.info("To which account do you want deposit? ");
+            logger.info("To which account do you want to deposit? ");
             int accountChoice = scanner.nextInt();
-            logger.info("How much money do you want deposit? ");
+            logger.info("How much money do you want to deposit? ");
             int money = scanner.nextInt();
             BankAccount depositTo = bankProvider.getAllBanks().get(bankChoice).getBankAccountList().get(accountChoice);
             Swift bankSwiftNumber = bankProvider.getAllBanks().get(bankChoice).getSwiftNumber();
-            Payment payment = new Payment("Deposit to " + bankSwiftNumber.toString() + " : " + depositTo.getAccountNumber() + " \ncash: " + money + " \nDate: " + LocalDate.now());
-            bankProvider.deposit(depositTo, money, payment, bankSwiftNumber);
+            bankProvider.deposit(depositTo, money, bankSwiftNumber);
         } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }
@@ -246,12 +243,12 @@ public class BankController {
             throw new NullPointerException("You don't have banks!");
         try {
             int i = 0;
-            System.out.println("Which bank account do you want use to Withdraw? ");
+            System.out.println("Which bank account do you want use to transfer? ");
             for (Bank bank : bankProvider.getAllBanks()) {
                 logger.info(i++ + ". " + bank.getSwiftNumber().toString());
             }
             int firstBankChoice = scanner.nextInt();
-            logger.info("Which bank account do you want use to Deposit? ");
+            logger.info("Which bank account do you want use to transfer to? ");
             i = 0;
             for (Bank bank : bankProvider.getAllBanks()) {
                 logger.info(i++ + ". " + bank.getSwiftNumber().toString());
@@ -263,16 +260,16 @@ public class BankController {
             for (BankAccount account : bankProvider.getAllBanks().get(firstBankChoice).getBankAccountList()) {
                 logger.info(i++ + ". " + account.getAccountNumber());
             }
-            logger.info("Whereof account do you want Withdraw? ");
+            logger.info("Whereof account do you want to transfer? ");
             int firstAccountChoice = scanner.nextInt();
             i = 0;
             logger.info(bankProvider.getAllBanks().get(secondBankChoice).getSwiftNumber().toString() + ":");
             for (BankAccount account : bankProvider.getAllBanks().get(secondBankChoice).getBankAccountList()) {
                 logger.info(i++ + ". " + account.getAccountNumber());
             }
-            System.out.println("To which account do you want Deposit? ");
+            System.out.println("To which account do you want transfer to? ");
             int secondAccountChoice = scanner.nextInt();
-            logger.info("How much money do you want Withdraw? ");
+            logger.info("How much money do you want to transfer? ");
             int money = scanner.nextInt();
             logger.info("Please provide title: ");
             String title = scanner.nextLine();
@@ -280,8 +277,7 @@ public class BankController {
             BankAccount transferTo = bankProvider.getAllBanks().get(secondBankChoice).getBankAccountList().get(secondAccountChoice);
             Swift firstBankSwiftNumber = bankProvider.getAllBanks().get(firstBankChoice).getSwiftNumber();
             Swift secondBankSwiftNumber = bankProvider.getAllBanks().get(secondBankChoice).getSwiftNumber();
-            Payment payment = new Payment(title + "\nTransfer from " + firstBankSwiftNumber.toString() + " : " + transferFrom.getAccountNumber() + " to " + "\n" + secondBankSwiftNumber.toString() + " : " + transferTo.getAccountNumber() + "\n cash: " + money + " \nDate: " + LocalDate.now());
-            bankProvider.internationalTransfer(firstBankSwiftNumber, secondBankSwiftNumber, payment, money, transferFrom, transferTo);
+            bankProvider.internationalTransfer(firstBankSwiftNumber, secondBankSwiftNumber, title, money, transferFrom, transferTo);
         } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
         }

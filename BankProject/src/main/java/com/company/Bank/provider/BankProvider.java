@@ -5,9 +5,9 @@ import com.company.bank.controllers.FileManager;
 import com.company.bank.domain.Bank;
 import com.company.bank.domain.Swift;
 import com.company.bank.domain.Person;
-import com.company.bank.domain.Payment;
 import com.company.bank.domain.BankAccount;
 import com.company.bank.transactions.Deposit;
+import com.company.bank.transactions.DomesticTransfer;
 import com.company.bank.transactions.InternationalTransfer;
 import com.company.bank.transactions.Withdraw;
 
@@ -97,28 +97,28 @@ public class BankProvider {
         return true;
     }
 
-    public void cashWithdrawer(BankAccount account, int money, Payment paymentTitle, Swift swiftNumber) throws IOException {
-        Withdraw transfer = new Withdraw();
-        transfer.cashWithdrawer(account, money, paymentTitle, swiftNumber);
+    public void cashWithdrawer(BankAccount account, int money, Swift swiftNumber) throws IOException {
+        Withdraw transfer = new Withdraw(account, money, swiftNumber);
+        transfer.execute();
     }
 
-    public void transferWithdrawer(BankAccount firstAccount, BankAccount secondAccount, int money, Payment paymentTitle, Swift swiftNumber) throws IOException {
-        Withdraw transfer = new Withdraw();
-        transfer.transferWithdrawer(firstAccount, secondAccount, money, paymentTitle, swiftNumber);
+    public void transferWithdrawer(BankAccount firstAccount, BankAccount secondAccount, int money, String paymentTitle, Swift swiftNumber) throws IOException {
+        DomesticTransfer transfer = new DomesticTransfer(firstAccount, secondAccount, money, paymentTitle, swiftNumber);
+        transfer.execute();
     }
 
-    public void internationalTransfer(Swift swiftBank1, Swift swiftBank2, Payment paymentTitle, int money, BankAccount firstAccount, BankAccount secondAccount) throws IOException {
-        InternationalTransfer transfer = new InternationalTransfer();
-        transfer.internationalTransfer(swiftBank1, swiftBank2, paymentTitle, money, firstAccount, secondAccount);
+    public void internationalTransfer(Swift swiftBank1, Swift swiftBank2, String paymentTitle, int money, BankAccount firstAccount, BankAccount secondAccount) throws IOException {
+        InternationalTransfer transfer = new InternationalTransfer(firstAccount, secondAccount, money, paymentTitle, swiftBank1, swiftBank2);
+        transfer.execute();
     }
 
-    public void deposit(BankAccount account, int money, Payment paymentTitle, Swift swiftNumber) throws IOException {
-        Deposit depositTransfer = new Deposit();
-        depositTransfer.deposit(account, money, paymentTitle, swiftNumber);
+    public void deposit(BankAccount account, int money, Swift swiftNumber) throws IOException {
+        Deposit depositTransfer = new Deposit(account, money, swiftNumber);
+        depositTransfer.execute();
     }
 
     public List<String> readPaymentsHistory() throws IOException {
-        return FileManager.getFile().readFromFile(Payment.getPaymentFile());
+        return FileManager.getFile().readFromFile("Payments.txt");
     }
 
     public List<String> readClientHistory(String surname) throws IOException {

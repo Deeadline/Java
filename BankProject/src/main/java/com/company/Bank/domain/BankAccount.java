@@ -1,6 +1,7 @@
 package com.company.bank.domain;
 
 import com.company.bank.provider.BankProvider;
+import com.company.bank.transactions.Transfer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.Objects;
 public class BankAccount {
     private final String bankAccountNumber;
     private int accountBalance = 0;
-    private final List<Payment> paymentsList = new ArrayList<>();
+    private final List<Transfer> paymentsList = new ArrayList<>();
 
     public BankAccount(String bankAccountNumber) {
         for (Bank bank : BankProvider.getBankProviderInstance().getAllBanks()) {
@@ -39,8 +40,8 @@ public class BankAccount {
         return accountBalance;
     }
 
-    public void addPayment(Payment payment) {
-        paymentsList.add(payment);
+    public void addPayment(Transfer transfer) {
+        paymentsList.add(transfer);
     }
 
     @Override
