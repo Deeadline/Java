@@ -4,7 +4,6 @@ import com.company.bank.controllers.FileManager;
 import com.company.bank.domain.BankAccount;
 import com.company.bank.domain.Swift;
 import com.company.bank.provider.BankProvider;
-import jdk.nashorn.internal.runtime.logging.Logger;
 
 import java.io.IOException;
 
@@ -27,9 +26,9 @@ public class Deposit implements Transfer {
         BankProvider.getBankProviderInstance().getBank(bankSwiftNumber).addPayments(this);
         BankProvider.getBankProviderInstance().getUser(account).addPayment(this);
         account.addPayment(this);
-        if (!FileManager.getFile().isFileExist("Payments.txt"))
-            FileManager.getFile().openFile("Payments.txt");
-        FileManager.getFile().saveToFile("Payments.txt", this.toString());
+        if (!FileManager.getInstance().isFileExist("Payments.txt"))
+            FileManager.getInstance().openFile("Payments.txt");
+        FileManager.getInstance().saveToFile("Payments.txt", this.toString());
         BankProvider.getBankProviderInstance().updateHistory(account.getAccountNumber(), account.toString());
         BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(account).getSurname(), account.toString());
         BankProvider.getBankProviderInstance().updateHistory(bankSwiftNumber.toString(), BankProvider.getBankProviderInstance().getBank(bankSwiftNumber).toString());

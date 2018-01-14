@@ -12,12 +12,13 @@ public class BankAccount implements Savable {
     private int accountBalance = 0;
     private final List<Transfer> paymentsList = new ArrayList<>();
     private String bankName;
+    private String ownerPESEL;
 
     public BankAccount() {
 
     }
 
-    public BankAccount(String bankAccountNumber, String bankName) {
+    public BankAccount(String bankAccountNumber, String bankName, String ownerPESEL) {
         for (Bank bank : BankProvider.getBankProviderInstance().getAllBanks()) {
             for (BankAccount bankAccount : bank.getBankAccountList()) {
                 if (bankAccount.getAccountNumber().equals(bankAccountNumber))
@@ -26,6 +27,7 @@ public class BankAccount implements Savable {
         }
         this.bankName = bankName;
         this.bankAccountNumber = bankAccountNumber;
+        this.ownerPESEL = ownerPESEL;
     }
 
     public String getAccountNumber() {
@@ -34,6 +36,10 @@ public class BankAccount implements Savable {
 
     public String getBankName() {
         return bankName;
+    }
+
+    public String getOwnerPESEL() {
+        return ownerPESEL;
     }
 
     public int deposit(int value) {
@@ -79,14 +85,15 @@ public class BankAccount implements Savable {
 
     @Override
     public void load(String content) {
-        String[] parts = content.split("-");
+        String[] parts = content.split(" - ");
         bankName = parts[0];
         bankAccountNumber = parts[1];
         accountBalance = Integer.parseInt(parts[2]);
+        ownerPESEL = parts[3];
     }
 
     @Override
     public String save() {
-        return bankName + " - " + bankAccountNumber + " - " + accountBalance;
+        return bankName + " - " + bankAccountNumber + " - " + accountBalance + " - " + ownerPESEL;
     }
 }

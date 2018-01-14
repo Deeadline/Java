@@ -31,6 +31,8 @@ public class BankController {
     static {
         DOMConfigurator.configure("src\\main\\resources\\log4j.xml");
         try {
+            bankProvider.loadBanks();
+            bankProvider.loadAccounts();
             bankProvider.loadUsers();
         } catch (IOException e) {
             e.printStackTrace();
@@ -54,9 +56,20 @@ public class BankController {
         try {
             int userChoice = scanner.nextInt();
             if (userChoice == 11) {
-                FileManager.getFile().openFile("People.txt");
+                FileManager.getInstance().removeFile("People.txt");
+                FileManager.getInstance().removeFile("Banks.txt");
+                FileManager.getInstance().removeFile("Accounts.txt");
+                FileManager.getInstance().openFile("People.txt");
+                FileManager.getInstance().openFile("Banks.txt");
+                FileManager.getInstance().openFile("Accounts.txt");
+                for (Bank bank : BankProvider.getBankProviderInstance().getAllBanks()) {
+                    FileManager.getInstance().saveToFile("Banks.txt", bank.save());
+                    for (BankAccount account : bank.getBankAccountList()) {
+                        FileManager.getInstance().saveToFile("Accounts.txt", account.save());
+                    }
+                }
                 for (Person person : BankProvider.getBankProviderInstance().getUsers()) {
-                    FileManager.getFile().saveToFile("People.txt", person.save());
+                    FileManager.getInstance().saveToFile("People.txt", person.save());
                 }
                 return false;
             }

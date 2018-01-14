@@ -13,9 +13,10 @@ public class Bank implements Savable {
     private final List<Person> personList = new ArrayList<>();
     private final List<Transfer> paymentsList = new ArrayList<>();
 
-    public Bank(){
+    public Bank() {
 
     }
+
     public Bank(Swift swiftNumber) {
         if (BankProvider.getBankProviderInstance().getBank(swiftNumber) != null)
             throw new IllegalArgumentException("There cannot exists 2 banks with one Swift number");
@@ -41,14 +42,17 @@ public class Bank implements Savable {
     public void addPayments(Transfer transfer) {
         paymentsList.add(transfer);
     }
+
     @Override
-    public void load(String content){
+    public void load(String content) {
         swiftNumber = Swift.valueOf(content);
     }
+
     @Override
-    public String save(){
-        return swiftNumber.toString();
+    public String save() {
+        return swiftNumber.name();
     }
+
     @Override
     public String toString() {
         return "bank{" +

@@ -31,11 +31,36 @@ public class BankProvider {
         return bankProviderInstance;
     }
 
+    public void loadBanks() throws IOException {
+        for (String content : FileManager.getInstance().readFromFile("Banks.txt")) {
+            Bank bank = new Bank();
+            bank.load(content);
+            bankList.add(bank);
+        }
+    }
+
+    public void loadAccounts() throws IOException {
+        for (String content : FileManager.getInstance().readFromFile("Accounts.txt")) {
+            BankAccount account = new BankAccount();
+            account.load(content);
+            for (Person person : users) {
+                if (person.getPESEL().equals(account.getOwnerPESEL())) {
+                    person.addAccount(account);
+                }
+            }
+            for (Bank bank : bankList) {
+                if (bank.getSwiftNumber().toString().equals(account.getBankName())) {
+                    bank.addAccount(account);
+                }
+            }
+        }
+    }
+
     public void loadUsers() throws IOException {
-        for (String content : FileManager.getFile().readFromFile("People.txt")) {
-            Person loader = new Person();
-            loader.load(content);
-            addUser(loader);
+        for (String content : FileManager.getInstance().readFromFile("People.txt")) {
+            Person person = new Person();
+            person.load(content);
+            addUser(person);
         }
     }
 
@@ -83,16 +108,16 @@ public class BankProvider {
                     return false;
             }
         }
-        BankAccount account = new BankAccount(numbers, swiftNumber.toString());
+        BankAccount account = new BankAccount(numbers, swiftNumber.toString(), accountUser.getPESEL());
         accountUser.addAccount(account);
         getBank(swiftNumber).addAccount(account);
         getBank(swiftNumber).addPerson(accountUser);
 
         updateHistory(swiftNumber.toString(), getBank(swiftNumber).toString());
         updateHistory(accountUser.getSurname(), users.toString());
-        if (!FileManager.getFile().isFileExist(account.getAccountNumber() + ".txt"))
-            FileManager.getFile().openFile(account.getAccountNumber() + ".txt");
-        FileManager.getFile().saveToFile(account.getAccountNumber() + ".txt", account.toString());
+        if (!FileManager.getInstance().isFileExist(account.getAccountNumber() + ".txt"))
+            FileManager.getInstance().openFile(account.getAccountNumber() + ".txt");
+        FileManager.getInstance().saveToFile(account.getAccountNumber() + ".txt", account.toString());
         return true;
     }
 
@@ -117,29 +142,29 @@ public class BankProvider {
     }
 
     public List<String> readPaymentsHistory() throws IOException {
-        return FileManager.getFile().readFromFile("Payments.txt");
+        return FileManager.getInstance().readFromFile("Payments.txt");
     }
 
     public List<String> readClientHistory(String surname) throws IOException {
-        return FileManager.getFile().readFromFile(surname + ".txt");
+        return FileManager.getInstance().readFromFile(surname + ".txt");
     }
 
     public List<String> readAccountHistory(String accountNumber) throws IOException {
-        return FileManager.getFile().readFromFile(accountNumber + ".txt");
+        return FileManager.getInstance().readFromFile(accountNumber + ".txt");
     }
 
     public List<String> readBankHistory(String swiftNumber) throws IOException {
-        return FileManager.getFile().readFromFile(swiftNumber + ".txt");
+        return FileManager.getInstance().readFromFile(swiftNumber + ".txt");
     }
 
     public void updateHistory(String path, String contents) throws IOException {
-        if (FileManager.getFile().isFileExist(path + ".txt")) {
-            FileManager.getFile().removeFile(path + ".txt");
-            FileManager.getFile().openFile(path + ".txt");
-            FileManager.getFile().saveToFile(path + ".txt", contents);
+        if (FileManager.getInstance().isFileExist(path + ".txt")) {
+            FileManager.getInstance().removeFile(path + ".txt");
+            FileManager.getInstance().openFile(path + ".txt");
+            FileManager.getInstance().saveToFile(path + ".txt", contents);
         } else {
-            FileManager.getFile().openFile(path + ".txt");
-            FileManager.getFile().saveToFile(path + ".txt", contents);
+            FileManager.getInstance().openFile(path + ".txt");
+            FileManager.getInstance().saveToFile(path + ".txt", contents);
         }
     }
 }

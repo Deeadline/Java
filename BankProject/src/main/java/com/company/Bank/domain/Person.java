@@ -19,8 +19,8 @@ public class Person implements Savable {
     }
 
     public Person(String name, String surname, String PESEL) {
-        for(Person user : BankProvider.getBankProviderInstance().getUsers()){
-            if(user.getPESEL().equals(PESEL))
+        for (Person user : BankProvider.getBankProviderInstance().getUsers()) {
+            if (user.getPESEL().equals(PESEL))
                 throw new IllegalArgumentException("There cannot exists 2 PESEL with one person");
         }
         this.name = name;
@@ -38,10 +38,8 @@ public class Person implements Savable {
         int value = 0;
         for (int i = 0; i < PESEL.length() - 1; i++) {
             value += (Integer.parseInt(String.valueOf(PESEL.charAt(i))) * tab[i]);
-            System.out.println(value);
         }
         value %= 10;
-        System.out.println(value);
         return (10 - value) == Integer.parseInt(String.valueOf(PESEL.charAt(PESEL.length() - 1)));
     }
 
@@ -53,7 +51,9 @@ public class Person implements Savable {
         return surname;
     }
 
-    public String getPESEL() {return  PESEL;}
+    public String getPESEL() {
+        return PESEL;
+    }
 
     public List<BankAccount> getAccount() {
         return bankAccountList;

@@ -5,21 +5,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileManager {
-    private static FileManager file;
+    private static FileManager instance;
 
     private FileManager() {
     }
 
-    public static FileManager getFile() {
-        if (file == null) {
-            file = new FileManager();
+    public static FileManager getInstance() {
+        if (instance == null) {
+            instance = new FileManager();
         }
-        return file;
+        return instance;
     }
 
     public boolean removeFile(String path) {
-        File file = new File(path);
-        return file.delete();
+        return new File(path).delete();
     }
 
     public boolean isFileExist(String path) {
@@ -28,8 +27,7 @@ public class FileManager {
     }
 
     public void openFile(String path) throws IOException {
-        File file = new File(path);
-        file.createNewFile();
+        new File(path).createNewFile();
     }
 
     public void saveToFile(String path, String contents) throws IOException {
