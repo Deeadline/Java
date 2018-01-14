@@ -18,7 +18,6 @@ public class BootstrapDatePickersPage extends PageObjectFactory<BootstrapDatePic
     private By startDate = By.xpath("/html/body/div[3]/div[1]/table/tbody/tr[3]/td[6]");
     private By endDate = By.xpath("/html/body/div[3]/div[1]/table/tbody/tr[3]/td[7]");
     private By endDateInput = By.xpath("//input[contains(@class,'form-control') and @placeholder='End date']");
-    private DateTimeFormatter dateFormat;
     private DateTimeFormatter dateFormatOutcome;
     private LocalDate todayDate;
 
@@ -79,7 +78,7 @@ public class BootstrapDatePickersPage extends PageObjectFactory<BootstrapDatePic
     }
 
     public void setDateFormat() {
-        dateFormat = DateTimeFormatter.ofPattern("d");
+        //DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("d");
         dateFormatOutcome = DateTimeFormatter.ofPattern("dd/MM/yyyy", Locale.ENGLISH);
         todayDate = LocalDate.now();
     }

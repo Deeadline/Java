@@ -1,7 +1,11 @@
 package firstTest;
 
 import com.company.page.pages.BootstrapAlertMessagesPage;
-import org.junit.*;
+import org.junit.Test;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Before;
+import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 
@@ -31,7 +35,7 @@ public class TestBootstrapAlertMessages {
     public void normalSuccessMessage() {
         webPage.clickOnNormalSuccessMessageButton();
         Assert.assertTrue(webPage.isActive(webPage.getShowNormalSuccessMessage()));
-        webPage.closeNormalMessage(webPage.getShowNormalSuccessMessage());
+        webPage.closeNormalMessage();
     }
 
     @Test
@@ -46,7 +50,7 @@ public class TestBootstrapAlertMessages {
     public void normalWarningMessage() {
         webPage.clickOnNormalWarningMessageButton();
         Assert.assertTrue(webPage.isActive(webPage.getShowNormalWarningMessage()));
-        webPage.closeNormalMessage(webPage.getShowNormalWarningMessage());
+        webPage.closeWarningMessage();
     }
 
     @Test
@@ -61,14 +65,14 @@ public class TestBootstrapAlertMessages {
     public void normalDangerMessage() {
         webPage.clickOnNormalDangerMessageButton();
         Assert.assertTrue(webPage.isActive(webPage.getShowNormalDangerMessage()));
-        webPage.closeNormalMessage(webPage.getShowNormalDangerMessage());
+        webPage.closeDangerMessage();
     }
 
     @Test
     public void autoInfoMessage() throws InterruptedException {
         webPage.clickOnAutoInfoMessageButton();
         Assert.assertTrue(webPage.isActive(webPage.getShowAutoInfoMessage()));
-        Thread.sleep(6000);
+        Thread.sleep(7000);
         Assert.assertFalse(webPage.isActive(webPage.getShowAutoInfoMessage()));
     }
 
@@ -77,7 +81,7 @@ public class TestBootstrapAlertMessages {
         webPage.clickOnNormalInfoMessageButton();
         Assert.assertTrue(webPage.isActive(webPage.getShowNormalInfoMessage()));
         Thread.sleep(1000);
-        webPage.closeNormalMessage(webPage.getShowNormalInfoMessage());
+        webPage.closeInfoMessage();
     }
 
     @AfterClass

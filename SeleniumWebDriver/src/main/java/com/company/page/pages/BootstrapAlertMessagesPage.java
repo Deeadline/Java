@@ -24,7 +24,10 @@ public class BootstrapAlertMessagesPage extends PageObjectFactory<BootstrapAlert
     private By showNormalDangerMessage = By.xpath("//*[@class=\"alert alert-danger alert-normal-danger\"]");
     private By showAutoInfoMessage = By.xpath("//*[@class=\"alert alert-info alert-autocloseable-info\"]");
     private By showNormalInfoMessage = By.xpath("//*[@class=\"alert alert-info alert-normal-info\"]");
-    private By buttonCloser = By.xpath("//*[@class=\"close\"]");
+    private By buttonSuccesCloser = By.xpath("//*[@class=\"alert alert-success alert-normal-success\"]//button[@class=\"close\"]");
+    private By buttonWarningCloser = By.xpath("//*[@class=\"alert alert-warning alert-normal-warning\"]//button[@class=\"close\"]");
+    private By buttonDangerCloser = By.xpath("//*[@class=\"alert alert-danger alert-normal-danger\"]//button[@class=\"close\"]");
+    private By buttonInfoCloser = By.xpath("//*[@class=\"alert alert-info alert-normal-info\"]//button[@class=\"close\"]");
 
     public BootstrapAlertMessagesPage(WebDriver driver) {
         super(driver);
@@ -66,9 +69,20 @@ public class BootstrapAlertMessagesPage extends PageObjectFactory<BootstrapAlert
         click(normalInfoMessageButton);
     }
 
-    public void closeNormalMessage(By message) {
-        WebElement element = webdriver.findElement(message);
-        element.findElement(buttonCloser).click();
+    public void closeNormalMessage() {
+        click(buttonSuccesCloser);
+    }
+
+    public void closeWarningMessage() {
+        click(buttonWarningCloser);
+    }
+
+    public void closeDangerMessage() {
+        click(buttonDangerCloser);
+    }
+
+    public void closeInfoMessage() {
+        click(buttonInfoCloser);
     }
 
     public By getShowAutoSuccessMessage() {
