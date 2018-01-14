@@ -1,6 +1,6 @@
 package firstTest;
 
-import com.company.page.BootstrapDatePickersPage;
+import com.company.page.pages.BootstrapDatePickersPage;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.AfterClass;

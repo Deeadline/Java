@@ -1,6 +1,6 @@
 package firstTest;
 
-import com.company.page.AjaxFormSubmitPage;
+import com.company.page.pages.AjaxFormSubmitPage;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;

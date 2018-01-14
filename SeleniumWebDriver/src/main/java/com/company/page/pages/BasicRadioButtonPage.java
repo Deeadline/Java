@@ -1,5 +1,6 @@
-package com.company.page;
+package com.company.page.pages;
 
+import com.company.page.factory.PageObjectFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 

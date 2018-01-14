@@ -1,6 +1,6 @@
 package firstTest;
 
-import com.company.page.CheckBoxPage;
+import com.company.page.pages.CheckBoxPage;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -17,7 +17,6 @@ public class TestCheckBox {
         webPage = new CheckBoxPage(webDriver);
         webPage.openPage();
     }
-
     @Test
     public void checkSingleCheckBox() {
         webPage.clickSingleCheckBox();

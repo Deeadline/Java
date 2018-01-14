@@ -1,6 +1,6 @@
 package firstTest;
 
-import com.company.page.BasicRadioButtonPage;
+import com.company.page.pages.BasicRadioButtonPage;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.BeforeClass;

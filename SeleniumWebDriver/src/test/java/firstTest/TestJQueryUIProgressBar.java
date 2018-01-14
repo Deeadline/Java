@@ -1,6 +1,6 @@
 package firstTest;
 
-import com.company.page.JQueryUIProgressBarPage;
+import com.company.page.pages.JQueryUIProgressBarPage;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.BeforeClass;

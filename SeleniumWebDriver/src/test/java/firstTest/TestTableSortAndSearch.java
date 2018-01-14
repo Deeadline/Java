@@ -1,6 +1,6 @@
 package firstTest;
 
-import com.company.page.TableSortAndSearchPage;
+import com.company.page.pages.TableSortAndSearchPage;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;

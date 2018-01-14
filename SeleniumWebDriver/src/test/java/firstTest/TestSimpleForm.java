@@ -1,6 +1,6 @@
 package firstTest;
 
-import com.company.page.SimpleFormPage;
+import com.company.page.pages.SimpleFormPage;
 import org.junit.Test;
 import org.junit.BeforeClass;
 import org.junit.AfterClass;

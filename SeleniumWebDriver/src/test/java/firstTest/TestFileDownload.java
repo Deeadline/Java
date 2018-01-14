@@ -1,12 +1,10 @@
 package firstTest;
 
-import com.company.page.FileDownloadPage;
-import com.company.page.PageObjectFactory;
+import com.company.page.pages.FileDownloadPage;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 

@@ -1,23 +1,26 @@
-package com.company.page;
+package com.company.page.factory;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 public class PageObjectFactory<T> {
     protected WebDriver webdriver;
+    protected WebDriverWait webWait;
 
     public PageObjectFactory(WebDriver webdriver) {
         String chromeDriverPath = "chromedriver.exe";
         System.setProperty("webdriver.chrome.driver", chromeDriverPath);
         this.webdriver = webdriver;
+        webWait = new WebDriverWait(webdriver,30);
     }
 
-    T getPage(String url) {
+    protected T getPage(String url) {
         webdriver.get(url);
-        webdriver.getPageSource();
         webdriver.manage().window().maximize();
         return (T) this;
     }
@@ -27,36 +30,37 @@ public class PageObjectFactory<T> {
         return (T) this;
     }
 
-    T sendKeys(By textInput, String text) {
+    protected T sendKeys(By textInput, String text) {
         webdriver.findElement(textInput).sendKeys(text);
         return (T) this;
     }
 
-    String show(By showMessage) {
+    protected String show(By showMessage) {
         return webdriver.findElement(showMessage).getText();
     }
 
-    String showAttribute(By showMessage) {
+    protected String showAttribute(By showMessage) {
         return webdriver.findElement(showMessage).getAttribute("value");
     }
 
-    boolean isDisplayed(By container) {
+    protected boolean isDisplayed(By container) {
         return webdriver.findElement(container).isDisplayed();
     }
 
-    boolean isEnabled(By container) {
+    protected boolean isEnabled(By container) {
         return webdriver.findElement(container).isEnabled();
     }
 
-    boolean isContain(String text) {
+    protected boolean isContain(String text) {
         return webdriver.getPageSource().contains(text);
     }
 
-    List<WebElement> find(By container) {
+
+    protected List<WebElement> find(By container) {
         return webdriver.findElements(container);
     }
 
-    T close() {
+    protected T close() {
         webdriver.close();
         return (T) this;
     }
