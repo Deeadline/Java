@@ -4,6 +4,7 @@ import com.company.bank.controllers.FileManager;
 import com.company.bank.domain.BankAccount;
 import com.company.bank.domain.Swift;
 import com.company.bank.provider.BankProvider;
+import jdk.nashorn.internal.runtime.logging.Logger;
 
 import java.io.IOException;
 
@@ -38,7 +39,7 @@ public class Deposit implements Transfer {
     public String toString() {
         return "Deposit{" +
                 "title='" + title + '\'' +
-                ", account=" + account +
+                ", account=" + account.getAccountNumber() +
                 ", cash=" + cash +
                 ", bankSwiftNumber=" + bankSwiftNumber +
                 '}';

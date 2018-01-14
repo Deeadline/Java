@@ -54,8 +54,8 @@ public class InternationalTransfer implements Transfer {
     public String toString() {
         return "InternationalTransfer{" +
                 "title='" + title + '\'' +
-                ", firstAccount=" + firstAccount +
-                ", secondAccount=" + secondAccount +
+                ", firstAccount=" + firstAccount.getAccountNumber() +
+                ", secondAccount=" + secondAccount.getAccountNumber() +
                 ", cash=" + cash +
                 ", firstBankSwiftNumber=" + firstBankSwiftNumber +
                 ", secondBankSwiftNumber=" + secondBankSwiftNumber +

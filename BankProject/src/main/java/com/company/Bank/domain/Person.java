@@ -1,22 +1,48 @@
 package com.company.bank.domain;
 
+import com.company.bank.provider.BankProvider;
 import com.company.bank.transactions.Transfer;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Person {
-    private final String name;
-    private final String surname;
-    private final String birthDate;
+public class Person implements Savable {
+    private String name;
+    private String surname;
+    private String PESEL;
     private final List<BankAccount> bankAccountList = new ArrayList<>();
     private final List<Transfer> paymentsList = new ArrayList<>();
 
-    public Person(String name, String surname, String birthDate) {
+    public Person() {
+
+    }
+
+    public Person(String name, String surname, String PESEL) {
+        for(Person user : BankProvider.getBankProviderInstance().getUsers()){
+            if(user.getPESEL().equals(PESEL))
+                throw new IllegalArgumentException("There cannot exists 2 PESEL with one person");
+        }
         this.name = name;
         this.surname = surname;
-        this.birthDate = birthDate;
+        if (checkPESEL(PESEL)) {
+            this.PESEL = PESEL;
+        } else
+            this.PESEL = null;
+    }
+
+    private boolean checkPESEL(String PESEL) {
+        if (PESEL.length() != 11)
+            throw new IllegalArgumentException("PESEL cannot be accepted!");
+        int[] tab = {1, 3, 7, 9, 1, 3, 7, 9, 1, 3};
+        int value = 0;
+        for (int i = 0; i < PESEL.length() - 1; i++) {
+            value += (Integer.parseInt(String.valueOf(PESEL.charAt(i))) * tab[i]);
+            System.out.println(value);
+        }
+        value %= 10;
+        System.out.println(value);
+        return (10 - value) == Integer.parseInt(String.valueOf(PESEL.charAt(PESEL.length() - 1)));
     }
 
     public String getName() {
@@ -26,6 +52,8 @@ public class Person {
     public String getSurname() {
         return surname;
     }
+
+    public String getPESEL() {return  PESEL;}
 
     public List<BankAccount> getAccount() {
         return bankAccountList;
@@ -40,30 +68,42 @@ public class Person {
     }
 
     @Override
-    public String toString() {
-        return "Person{" +
-                "name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                ", bankAccountList=" + bankAccountList +
-                ", paymentsList=" + paymentsList +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !(o instanceof Person)) return false;
         Person person = (Person) o;
         return Objects.equals(name, person.name) &&
                 Objects.equals(surname, person.surname) &&
-                Objects.equals(birthDate, person.birthDate) &&
+                Objects.equals(PESEL, person.PESEL) &&
                 Objects.equals(bankAccountList, person.bankAccountList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, surname, birthDate, bankAccountList);
+        return Objects.hash(name, surname, PESEL);
     }
 
+    @Override
+    public String toString() {
+        return "Person{" +
+                "name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", PESEL='" + PESEL + '\'' +
+                ", bankAccountList=" + bankAccountList +
+                ", paymentsList=" + paymentsList +
+                '}';
+    }
+
+    @Override
+    public String save() {
+        return name + " - " + surname + " - " + PESEL;
+    }
+
+    @Override
+    public void load(String content) {
+        String[] parts = content.split(" - ");
+        name = parts[0];
+        surname = parts[1];
+        PESEL = parts[2];
+    }
 }

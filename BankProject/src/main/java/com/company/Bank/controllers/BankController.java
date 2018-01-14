@@ -8,14 +8,14 @@ import com.company.bank.provider.BankProvider;
 import org.apache.log4j.Logger;
 import org.apache.log4j.xml.DOMConfigurator;
 
-import java.time.LocalDate;
+import java.io.IOException;
 import java.util.Scanner;
 
 
 public class BankController {
     private static final Logger logger = Logger.getLogger(BankController.class);
     private static BankController instance;
-    private final BankProvider bankProvider = BankProvider.getBankProviderInstance();
+    private final static BankProvider bankProvider = BankProvider.getBankProviderInstance();
     private final Scanner scanner = new Scanner(System.in);
 
     private BankController() {
@@ -30,6 +30,11 @@ public class BankController {
 
     static {
         DOMConfigurator.configure("src\\main\\resources\\log4j.xml");
+        try {
+            bankProvider.loadUsers();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean bankMenu() {
@@ -48,8 +53,13 @@ public class BankController {
         logger.info("Enter your choice: ");
         try {
             int userChoice = scanner.nextInt();
-            if (userChoice == 11)
+            if (userChoice == 11) {
+                FileManager.getFile().openFile("People.txt");
+                for (Person person : BankProvider.getBankProviderInstance().getUsers()) {
+                    FileManager.getFile().saveToFile("People.txt", person.save());
+                }
                 return false;
+            }
             doSomething(userChoice);
         } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
@@ -120,9 +130,9 @@ public class BankController {
             String name = scanner.next();
             logger.info("Enter your surname: ");
             String surname = scanner.next();
-            logger.info("Enter your birthdate: ");
-            String birthDate = scanner.next();
-            Person person = new Person(name, surname, birthDate);
+            logger.info("Enter your PESEL");
+            String PESEL = scanner.next();
+            Person person = new Person(name, surname, PESEL);
             bankProvider.addUser(person);
         } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);

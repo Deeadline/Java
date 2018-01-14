@@ -31,6 +31,14 @@ public class BankProvider {
         return bankProviderInstance;
     }
 
+    public void loadUsers() throws IOException {
+        for (String content : FileManager.getFile().readFromFile("People.txt")) {
+            Person loader = new Person();
+            loader.load(content);
+            addUser(loader);
+        }
+    }
+
     public boolean createNewBank(Swift swiftNumber) {
         if (getBank(swiftNumber) == null) {
             bankList.add(new Bank(swiftNumber));
@@ -63,18 +71,9 @@ public class BankProvider {
         return null;
     }
 
-    public void addUser(Person user) throws IOException {
-        if (users.isEmpty()) {
-            if (!FileManager.getFile().isFileExist(user.getSurname() + ".txt"))
-                FileManager.getFile().openFile(user.getSurname() + ".txt");
-            FileManager.getFile().saveToFile(user.getSurname() + ".txt", user.toString());
-            users.add(user);
-        } else {
-            users.add(user);
-            updateHistory(user.getSurname(), users.toString());
-        }
+    public void addUser(Person user) {
+        users.add(user);
     }
-
 
     public Boolean addAccount(Person accountUser, Swift swiftNumber) throws IOException {
         String numbers = new Random().ints(0, 9).boxed().filter(i -> i >= 0 && i <= 9).limit(18).collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
@@ -84,7 +83,7 @@ public class BankProvider {
                     return false;
             }
         }
-        BankAccount account = new BankAccount(numbers);
+        BankAccount account = new BankAccount(numbers, swiftNumber.toString());
         accountUser.addAccount(account);
         getBank(swiftNumber).addAccount(account);
         getBank(swiftNumber).addPerson(accountUser);

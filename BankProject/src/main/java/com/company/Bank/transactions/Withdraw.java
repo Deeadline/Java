@@ -37,7 +37,7 @@ public class Withdraw implements Transfer {
     public String toString() {
         return "Withdraw{" +
                 "title='" + title + '\'' +
-                ", account=" + account +
+                ", account=" + account.getAccountNumber() +
                 ", cash=" + cash +
                 ", bankSwiftNumber=" + bankSwiftNumber +
                 '}';

@@ -7,23 +7,33 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class BankAccount {
-    private final String bankAccountNumber;
+public class BankAccount implements Savable {
+    private String bankAccountNumber;
     private int accountBalance = 0;
     private final List<Transfer> paymentsList = new ArrayList<>();
+    private String bankName;
 
-    public BankAccount(String bankAccountNumber) {
+    public BankAccount() {
+
+    }
+
+    public BankAccount(String bankAccountNumber, String bankName) {
         for (Bank bank : BankProvider.getBankProviderInstance().getAllBanks()) {
             for (BankAccount bankAccount : bank.getBankAccountList()) {
                 if (bankAccount.getAccountNumber().equals(bankAccountNumber))
                     throw new IllegalArgumentException("There cannot exists 2 account with one accountNumber");
             }
         }
+        this.bankName = bankName;
         this.bankAccountNumber = bankAccountNumber;
     }
 
     public String getAccountNumber() {
         return bankAccountNumber;
+    }
+
+    public String getBankName() {
+        return bankName;
     }
 
     public int deposit(int value) {
@@ -45,6 +55,16 @@ public class BankAccount {
     }
 
     @Override
+    public String toString() {
+        return "BankAccount{" +
+                "bankName='" + bankName + '\'' +
+                ", bankAccountNumber='" + bankAccountNumber + '\'' +
+                ", accountBalance=" + accountBalance +
+                ", paymentsList=" + paymentsList +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || !(o instanceof BankAccount)) return false;
@@ -53,15 +73,20 @@ public class BankAccount {
     }
 
     @Override
-    public String toString() {
-        return "bankAccountNumber='" + bankAccountNumber + '\'' +
-                ", accountBalance=" + accountBalance +
-                ", paymentsList=" + paymentsList;
-    }
-
-    @Override
     public int hashCode() {
         return Objects.hash(bankAccountNumber);
     }
 
+    @Override
+    public void load(String content) {
+        String[] parts = content.split("-");
+        bankName = parts[0];
+        bankAccountNumber = parts[1];
+        accountBalance = Integer.parseInt(parts[2]);
+    }
+
+    @Override
+    public String save() {
+        return bankName + " - " + bankAccountNumber + " - " + accountBalance;
+    }
 }

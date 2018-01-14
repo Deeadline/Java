@@ -45,7 +45,7 @@ public class DomesticTransfer implements Transfer {
     public String toString() {
         return "DomesticTransfer{" +
                 "title='" + title + '\'' +
-                ", firstAccount=" + firstAccount +
+                ", firstAccount=" + firstAccount.getAccountNumber() +
                 ", secondAccount=" + secondAccount +
                 ", cash=" + cash +
                 ", bankSwiftNumber=" + bankSwiftNumber +

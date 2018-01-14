@@ -1,27 +1,64 @@
 package com.company.page;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebElement;
 
-public class PageObjectFactory{
-    private WebDriver webdriver;
-    private String url;
-    final private String chromeDriverPath = "D:\\Java\\SeleniumWebDriver\\chromedriver.exe";
-    public PageObjectFactory(String url){
-        System.setProperty("webdriver.chrome.driver",chromeDriverPath);
-        webdriver = new ChromeDriver();
-        this.url = url;
+import java.util.List;
+
+public class PageObjectFactory<T> {
+    protected WebDriver webdriver;
+
+    public PageObjectFactory(WebDriver webdriver) {
+        String chromeDriverPath = "chromedriver.exe";
+        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+        this.webdriver = webdriver;
     }
-    public void openPage(){
+
+    T getPage(String url) {
         webdriver.get(url);
         webdriver.getPageSource();
         webdriver.manage().window().maximize();
-    }
-    public void closePage(){
-        webdriver.close();
+        return (T) this;
     }
 
-    public WebDriver getWebdriver() {
-        return webdriver;
+    protected T click(By clicker) {
+        webdriver.findElement(clicker).click();
+        return (T) this;
     }
+
+    T sendKeys(By textInput, String text) {
+        webdriver.findElement(textInput).sendKeys(text);
+        return (T) this;
+    }
+
+    String show(By showMessage) {
+        return webdriver.findElement(showMessage).getText();
+    }
+
+    String showAttribute(By showMessage) {
+        return webdriver.findElement(showMessage).getAttribute("value");
+    }
+
+    boolean isDisplayed(By container) {
+        return webdriver.findElement(container).isDisplayed();
+    }
+
+    boolean isEnabled(By container) {
+        return webdriver.findElement(container).isEnabled();
+    }
+
+    boolean isContain(String text) {
+        return webdriver.getPageSource().contains(text);
+    }
+
+    List<WebElement> find(By container) {
+        return webdriver.findElements(container);
+    }
+
+    T close() {
+        webdriver.close();
+        return (T) this;
+    }
+
 }
