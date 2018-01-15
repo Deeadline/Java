@@ -1,13 +1,13 @@
 package com.company.bank.main;
 
 
-import com.company.bank.controllers.BankController;
+import com.company.bank.controllers.BankService;
 
 
 public class Main {
 
     public static void main(String[] args) {
-        BankController bankController = BankController.getInstance();
+        BankService bankController = BankService.getInstance();
         do {
         } while (bankController.bankMenu());
     }
