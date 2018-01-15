@@ -66,7 +66,7 @@ public class BankAccount implements Savable {
                 "bankName='" + bankName + '\'' +
                 ", bankAccountNumber='" + bankAccountNumber + '\'' +
                 ", accountBalance=" + accountBalance +
-                ", paymentsList=" + paymentsList +
+                ",\r\n paymentsList=" + paymentsList +
                 '}';
     }
 

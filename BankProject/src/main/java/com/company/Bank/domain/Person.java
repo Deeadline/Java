@@ -89,7 +89,7 @@ public class Person implements Savable {
                 "name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
                 ", PESEL='" + PESEL + '\'' +
-                ", bankAccountList=" + bankAccountList +
+                ", \r\nbankAccountList=" + bankAccountList +
                 ", paymentsList=" + paymentsList +
                 '}';
     }

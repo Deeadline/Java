@@ -36,8 +36,8 @@ public class DomesticTransfer implements Transfer {
         FileManager.getInstance().saveToFile("Payments.txt", this.toString());
         BankProvider.getBankProviderInstance().updateHistory(firstAccount.getAccountNumber(), firstAccount.toString());
         BankProvider.getBankProviderInstance().updateHistory(secondAccount.getAccountNumber(), secondAccount.toString());
-        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(firstAccount).getSurname(), firstAccount.toString());
-        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(secondAccount).getSurname(), secondAccount.toString());
+        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(firstAccount).getPESEL(), BankProvider.getBankProviderInstance().getUser(firstAccount).toString());
+        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(secondAccount).getPESEL(), BankProvider.getBankProviderInstance().getUser(secondAccount).toString());
         BankProvider.getBankProviderInstance().updateHistory(bankSwiftNumber.toString(), BankProvider.getBankProviderInstance().getBank(bankSwiftNumber).toString());
     }
 

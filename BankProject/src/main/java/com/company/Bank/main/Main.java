@@ -1,4 +1,4 @@
-package main.java;
+package com.company.bank.main;
 
 
 import com.company.bank.controllers.BankController;

@@ -29,7 +29,7 @@ public class BankController {
     }
 
     static {
-        DOMConfigurator.configure("src\\main\\resources\\log4j.xml");
+        DOMConfigurator.configure("src\\com.company.bank.main\\resources\\log4j.xml");
         try {
             bankProvider.loadBanks();
             bankProvider.loadAccounts();
@@ -154,16 +154,16 @@ public class BankController {
 
     private void createAccount() {
         try {
-            int i = 0;
+            int bankIterator = 0;
             logger.info("Which bank do you want to add an account? ");
             for (Bank bank : bankProvider.getAllBanks()) {
-                logger.info(i++ + ". " + bank.getSwiftNumber().toString());
+                logger.info(bankIterator++ + ". " + bank.getSwiftNumber().toString());
             }
             int bankChoice = scanner.nextInt();
             logger.info("Which person do you want to create an account? ");
-            i = 0;
+            int userIterator = 0;
             for (Person user : bankProvider.getUsers()) {
-                logger.info(i++ + ". " + user.getName() + " " + user.getSurname());
+                logger.info(userIterator++ + ". " + user.getName() + " " + user.getSurname());
             }
             int personChoice = scanner.nextInt();
             if (bankProvider.addAccount(bankProvider.getUsers().get(personChoice), bankProvider.getAllBanks().get(bankChoice).getSwiftNumber()))
@@ -177,15 +177,15 @@ public class BankController {
         if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
-            int i = 0;
-            System.out.println("Which bank do you want use to transfer? ");
+            int bankIterator = 0;
+            logger.info("Which bank do you want use to transfer? ");
             for (Bank bank : bankProvider.getAllBanks()) {
-                logger.info(i++ + ". " + bank.getSwiftNumber().toString());
+                logger.info(bankIterator++ + ". " + bank.getSwiftNumber().toString());
             }
             int bankChoice = scanner.nextInt();
-            i = 0;
+            int accountIterator = 0;
             for (BankAccount account : bankProvider.getAllBanks().get(bankChoice).getBankAccountList()) {
-                logger.info(i++ + ". " + account.getAccountNumber());
+                logger.info(accountIterator++ + ". " + account.getAccountNumber());
             }
             logger.info("Whereof account do you want to withdraw? ");
             int accountChoice = scanner.nextInt();
@@ -203,21 +203,21 @@ public class BankController {
         if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
-            int i = 0;
-            System.out.println("Which bank do you want use to transfer? ");
+            int bankIterator = 0;
+            logger.info("Which bank do you want use to transfer? ");
             for (Bank bank : bankProvider.getAllBanks()) {
-                logger.info(i++ + ". " + bank.getSwiftNumber().toString());
+                logger.info(bankIterator++ + ". " + bank.getSwiftNumber().toString());
             }
             int bankChoice = scanner.nextInt();
-            i = 0;
+            int accountIterator = 0;
             for (BankAccount account : bankProvider.getAllBanks().get(bankChoice).getBankAccountList()) {
-                logger.info(i++ + ". " + account.getAccountNumber());
+                logger.info(accountIterator++ + ". " + account.getAccountNumber());
             }
             logger.info("Whereof account do you want to transfer? ");
             int firstAccountChoice = scanner.nextInt();
-            i = 0;
+            accountIterator = 0;
             for (BankAccount account : bankProvider.getAllBanks().get(bankChoice).getBankAccountList()) {
-                logger.info(i++ + ". " + account.getAccountNumber());
+                logger.info(accountIterator++ + ". " + account.getAccountNumber());
             }
             logger.info("To which account do you want transfer to ?");
             int secondAccountChoice = scanner.nextInt();
@@ -238,16 +238,16 @@ public class BankController {
         if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
-            int i = 0;
+            int bankIterator = 0;
             logger.info("Which bank account do you want use to deposit? ");
             for (Bank bank : bankProvider.getAllBanks()) {
-                logger.info(i++ + ". " + bank.getSwiftNumber().toString());
+                logger.info(bankIterator++ + ". " + bank.getSwiftNumber().toString());
             }
             int bankChoice = scanner.nextInt();
-            i = 0;
+            int accountIterator = 0;
 
             for (BankAccount account : bankProvider.getAllBanks().get(bankChoice).getBankAccountList()) {
-                logger.info(i++ + ". " + account.getAccountNumber());
+                logger.info(accountIterator++ + ". " + account.getAccountNumber());
             }
             logger.info("To which account do you want to deposit? ");
             int accountChoice = scanner.nextInt();
@@ -265,32 +265,32 @@ public class BankController {
         if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
-            int i = 0;
-            System.out.println("Which bank account do you want use to transfer? ");
+            int bankIterator = 0;
+            logger.info("Which bank account do you want use to transfer? ");
             for (Bank bank : bankProvider.getAllBanks()) {
-                logger.info(i++ + ". " + bank.getSwiftNumber().toString());
+                logger.info(bankIterator++ + ". " + bank.getSwiftNumber().toString());
             }
             int firstBankChoice = scanner.nextInt();
             logger.info("Which bank account do you want use to transfer to? ");
-            i = 0;
+            bankIterator = 0;
             for (Bank bank : bankProvider.getAllBanks()) {
-                logger.info(i++ + ". " + bank.getSwiftNumber().toString());
+                logger.info(bankIterator++ + ". " + bank.getSwiftNumber().toString());
             }
             int secondBankChoice = scanner.nextInt();
 
             logger.info(bankProvider.getAllBanks().get(firstBankChoice).getSwiftNumber().toString() + ":");
-            i = 0;
+            int accountIterator = 0;
             for (BankAccount account : bankProvider.getAllBanks().get(firstBankChoice).getBankAccountList()) {
-                logger.info(i++ + ". " + account.getAccountNumber());
+                logger.info(accountIterator++ + ". " + account.getAccountNumber());
             }
             logger.info("Whereof account do you want to transfer? ");
             int firstAccountChoice = scanner.nextInt();
-            i = 0;
+            accountIterator = 0;
             logger.info(bankProvider.getAllBanks().get(secondBankChoice).getSwiftNumber().toString() + ":");
             for (BankAccount account : bankProvider.getAllBanks().get(secondBankChoice).getBankAccountList()) {
-                logger.info(i++ + ". " + account.getAccountNumber());
+                logger.info(accountIterator++ + ". " + account.getAccountNumber());
             }
-            System.out.println("To which account do you want transfer to? ");
+            logger.info("To which account do you want transfer to? ");
             int secondAccountChoice = scanner.nextInt();
             logger.info("How much money do you want to transfer? ");
             int money = scanner.nextInt();
@@ -310,10 +310,10 @@ public class BankController {
         if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
-            int i = 0;
+            int bankIterator = 0;
             logger.info("Which bank do you want to view? ");
             for (Bank bank : bankProvider.getAllBanks()) {
-                logger.info(i++ + ". " + bank.getSwiftNumber().toString());
+                logger.info(bankIterator++ + ". " + bank.getSwiftNumber().toString());
             }
             int bankChoice = scanner.nextInt();
             Swift bankSwiftNumber = bankProvider.getAllBanks().get(bankChoice).getSwiftNumber();
@@ -330,9 +330,9 @@ public class BankController {
             throw new NullPointerException("You don't have persons!");
         try {
             logger.info("Which person do you want to view? ");
-            int i = 0;
+            int userIterator = 0;
             for (Person user : bankProvider.getUsers()) {
-                logger.info(i++ + ". " + user.getName() + " " + user.getSurname());
+                logger.info(userIterator++ + ". " + user.getName() + " " + user.getSurname());
             }
             int userChoice = scanner.nextInt();
             String surname = bankProvider.getUsers().get(userChoice).getSurname();
@@ -349,13 +349,13 @@ public class BankController {
         if (bankProvider.getAllBanks().isEmpty())
             throw new NullPointerException("You don't have banks!");
         try {
-            int i = 0;
+            int bankIterator = 0;
             logger.info("Which account do you want to view?");
             for (Bank bank : bankProvider.getAllBanks()) {
-                System.out.println(i++ + ". " + bank.getSwiftNumber());
-                int j = 0;
+                logger.info(bankIterator++ + ". " + bank.getSwiftNumber());
+                int accountIterator = 0;
                 for (BankAccount bankAccount : bank.getBankAccountList()) {
-                    logger.info(j++ + ". " + bankAccount.getAccountNumber());
+                    logger.info(accountIterator++ + ". " + bankAccount.getAccountNumber());
                 }
             }
             logger.info("bank: ");
@@ -365,7 +365,7 @@ public class BankController {
             String accountNumber = bankProvider.getAllBanks().get(bankChoice).getBankAccountList().get(accountChoice).getAccountNumber();
             logger.info("Account view: ");
             for (String content : bankProvider.readAccountHistory(accountNumber)) {
-                System.out.println(content);
+                logger.info(content);
             }
         } catch (Exception ex) {
             logger.error("Sorry, something wrong: ", ex);
@@ -374,7 +374,7 @@ public class BankController {
 
     private void paymentDetails() {
         try {
-            System.out.println("Transfers view: ");
+            logger.info("Transfers view: ");
             for (String content : bankProvider.readPaymentsHistory()) {
                 logger.info(content);
             }

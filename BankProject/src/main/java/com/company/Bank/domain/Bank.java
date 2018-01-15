@@ -56,10 +56,10 @@ public class Bank implements Savable {
     @Override
     public String toString() {
         return "bank{" +
-                "swiftNumber=" + swiftNumber +
-                ", bankAccountList=" + bankAccountList +
-                ", personList=" + personList +
-                ", paymentsList=" + paymentsList +
+                "swiftNumber=" + swiftNumber.name() +
+                ",\r\n bankAccountList=" + bankAccountList +
+                ",\r\n personList=" + personList +
+                ",\r\n paymentsList=" + paymentsList +
                 '}';
     }
 

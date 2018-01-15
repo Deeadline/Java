@@ -30,7 +30,7 @@ public class Deposit implements Transfer {
             FileManager.getInstance().openFile("Payments.txt");
         FileManager.getInstance().saveToFile("Payments.txt", this.toString());
         BankProvider.getBankProviderInstance().updateHistory(account.getAccountNumber(), account.toString());
-        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(account).getSurname(), account.toString());
+        BankProvider.getBankProviderInstance().updateHistory(BankProvider.getBankProviderInstance().getUser(account).getPESEL(), BankProvider.getBankProviderInstance().getUser(account).toString());
         BankProvider.getBankProviderInstance().updateHistory(bankSwiftNumber.toString(), BankProvider.getBankProviderInstance().getBank(bankSwiftNumber).toString());
     }
 

@@ -32,35 +32,41 @@ public class BankProvider {
     }
 
     public void loadBanks() throws IOException {
-        for (String content : FileManager.getInstance().readFromFile("Banks.txt")) {
-            Bank bank = new Bank();
-            bank.load(content);
-            bankList.add(bank);
+        if (FileManager.getInstance().isFileExist("Banks.txt")) {
+            for (String content : FileManager.getInstance().readFromFile("Banks.txt")) {
+                Bank bank = new Bank();
+                bank.load(content);
+                bankList.add(bank);
+            }
         }
     }
 
     public void loadAccounts() throws IOException {
-        for (String content : FileManager.getInstance().readFromFile("Accounts.txt")) {
-            BankAccount account = new BankAccount();
-            account.load(content);
-            for (Person person : users) {
-                if (person.getPESEL().equals(account.getOwnerPESEL())) {
-                    person.addAccount(account);
+        if (FileManager.getInstance().isFileExist("Accounts.txt")) {
+            for (String content : FileManager.getInstance().readFromFile("Accounts.txt")) {
+                BankAccount account = new BankAccount();
+                account.load(content);
+                for (Person person : users) {
+                    if (person.getPESEL().equals(account.getOwnerPESEL())) {
+                        person.addAccount(account);
+                    }
                 }
-            }
-            for (Bank bank : bankList) {
-                if (bank.getSwiftNumber().toString().equals(account.getBankName())) {
-                    bank.addAccount(account);
+                for (Bank bank : bankList) {
+                    if (bank.getSwiftNumber().toString().equals(account.getBankName())) {
+                        bank.addAccount(account);
+                    }
                 }
             }
         }
     }
 
     public void loadUsers() throws IOException {
-        for (String content : FileManager.getInstance().readFromFile("People.txt")) {
-            Person person = new Person();
-            person.load(content);
-            addUser(person);
+        if (FileManager.getInstance().isFileExist("People.txt")) {
+            for (String content : FileManager.getInstance().readFromFile("People.txt")) {
+                Person person = new Person();
+                person.load(content);
+                addUser(person);
+            }
         }
     }
 
@@ -114,7 +120,7 @@ public class BankProvider {
         getBank(swiftNumber).addPerson(accountUser);
 
         updateHistory(swiftNumber.toString(), getBank(swiftNumber).toString());
-        updateHistory(accountUser.getSurname(), users.toString());
+        updateHistory(accountUser.getPESEL(), users.toString());
         if (!FileManager.getInstance().isFileExist(account.getAccountNumber() + ".txt"))
             FileManager.getInstance().openFile(account.getAccountNumber() + ".txt");
         FileManager.getInstance().saveToFile(account.getAccountNumber() + ".txt", account.toString());
