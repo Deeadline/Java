@@ -28,11 +28,11 @@ public class TestSimpleForm {
     @Test
     public void testTwoInputForm() {
         webPage.clickOnFirstValueInput();
-        webPage.enterFirstValue("2");
+        webPage.provideFirstNumber("2");
         webPage.clickOnSecondValueInput();
-        webPage.enterSecondValue("2");
-        webPage.getTotalSubmit();
-        Assert.assertEquals("4", webPage.showSumMessage());
+        webPage.provideSecondNumber("2");
+        webPage.checkAddition();
+        Assert.assertEquals("4", webPage.showResult());
     }
 
     @AfterClass

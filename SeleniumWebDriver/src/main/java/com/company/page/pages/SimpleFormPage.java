@@ -38,19 +38,21 @@ public class SimpleFormPage extends PageObjectFactory<SimpleFormPage> {
         click(messageSumInput);
     }
 
-    public void enterFirstValue(String text) {
-        sendKeys(messageSumInput, text);
+    public void provideFirstNumber(String number) {
+        clickOnFirstValueInput();
+        sendKeys(messageSumInput, number);
     }
 
     public void clickOnSecondValueInput() {
         click(messageSumInput2);
     }
 
-    public void enterSecondValue(String text) {
-        sendKeys(messageSumInput2, text);
+    public void provideSecondNumber(String number) {
+        clickOnSecondValueInput();
+        sendKeys(messageSumInput2, number);
     }
 
-    public void getTotalSubmit() {
+    public void checkAddition() {
         click(messageSumClick);
     }
 
@@ -58,11 +60,18 @@ public class SimpleFormPage extends PageObjectFactory<SimpleFormPage> {
         return show(showMessage);
     }
 
-    public String showSumMessage() {
+    public String showResult() {
         return show(showSumMessage);
     }
 
     public void closePage() {
         close();
+    }
+
+    public String checkFirstNumber(){
+        return show(messageSumInput);
+    }
+    public String checkSeondNumber() {
+        return show(messageSumInput2);
     }
 }

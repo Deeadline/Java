@@ -1,81 +1,147 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
+    <groupId>com.hascode.tutorial</groupId>
+    <artifactId>jbehave-bdd-tutorial</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>hasCode.com jbehave BDD tutorial</name>
+    <packaging>war</packaging>
 
-    <groupId>1</groupId>
-    <artifactId>Selenium</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <jbehave.core.version>3.3.2</jbehave.core.version>
+        <jbehave.webapp.name>jbehave-webapprunner</jbehave.webapp.name>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.jbehave</groupId>
+            <artifactId>jbehave-core</artifactId>
+            <version>${jbehave.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jbehave.web</groupId>
+            <artifactId>jbehave-web-runner</artifactId>
+            <version>${jbehave.core.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>3.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>3.7.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium.client-drivers</groupId>
+            <artifactId>selenium-java-client-driver</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.jbehave.web/jbehave-web-selenium -->
+        <dependency>
+            <groupId>org.jbehave.web</groupId>
+            <artifactId>jbehave-web-selenium</artifactId>
+            <version>3.5.5</version>
+        </dependency>
+
+
+        <!-- only needed if you don't want to use a standalone selenium server -->
+        <dependency>
+            <groupId>org.openqa.selenium.server</groupId>
+            <artifactId>selenium-server</artifactId>
+            <version>1.0-20081010.060147</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.6</source>
+                    <target>1.6</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+
+                        <id>unpack-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/resources</outputDirectory>
+
+                            <overWriteReleases>true</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>
+                            <excludes>**/*.class</excludes>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.jbehave.web</groupId>
+                                    <artifactId>jbehave-web-runner</artifactId>
+                                    <version>${jbehave.core.version}</version>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>copy-custom-resources</id>
+                        <phase>process-resources</phase>
+                        <goals>
+
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/resources</outputDirectory>
+                            <overwrite>true</overwrite>
+                            <resources>
+                                <resource>
+
+                                    <directory>${basedir}/src/main/webapp</directory>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-war-plugin</artifactId>
+                <configuration>
+                    <webResources>
+                        <resource>
+                            <directory>${project.build.directory}/resources</directory>
+                        </resource>
+
+                    </webResources>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.mortbay.jetty</groupId>
+                <artifactId>jetty-maven-plugin</artifactId>
+                <configuration>
+                    <webAppConfig>
+
+                        <contextPath>/${jbehave.webapp.name}</contextPath>
+                    </webAppConfig>
+                    <webApp>${project.build.directory}/${jbehave.webapp.name}.war</webApp>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-    <name>SeleniumWebDriver</name>
-    <properties>
-        <remoteUrlHost>http://127.0.0.1/</remoteUrlHost>
-        <remoteUrlPort>4440</remoteUrlPort>
-        <baseUrl>http://www.seleniumeasy.com/test/</baseUrl>
-        <browserType>Chrome</browserType>
-    </properties>
-    <dependencies>
-        <!-- https://mvnrepository.com/artifact/org.jbehave/jbehave-core -->
-        <dependency>
-            <groupId>org.jbehave</groupId>
-            <artifactId>jbehave-core</artifactId>
-            <version>4.1.3</version>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-api</artifactId>
-            <version>2.52.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-chrome-driver</artifactId>
-            <version>2.52.0</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.commons</groupId>
-            <artifactId>commons-lang3</artifactId>
-            <version>3.4</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-remote-driver</artifactId>
-            <version>2.52.0</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-support</artifactId>
-            <version>2.52.0</version>
-        </dependency>
-        <dependency>
-            <groupId>log4j</groupId>
-            <artifactId>log4j</artifactId>
-            <version>1.2.17</version>
-        </dependency>
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-api</artifactId>
-            <version>2.52.0</version>
-        </dependency>
-    </dependencies>
-
-
 </project>
