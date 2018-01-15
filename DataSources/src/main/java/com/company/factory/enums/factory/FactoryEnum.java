@@ -11,19 +11,4 @@ public enum FactoryEnum {
     DBF,
     WSF,
     CSV;
-
-    public static Factory getFactory(FactoryEnum factory) {
-        switch (factory) {
-
-            case XML:
-                return new XMLFactory();
-            case DBF:
-                return new DBFactory();
-            case WSF:
-                return new WSFactory();
-            case CSV:
-                return new CSVFactory();
-        }
-        return null;
-    }
 }
