@@ -31,7 +31,7 @@ public class BankProvider {
         return bankProviderInstance;
     }
 
-    public void loadBanks() throws IOException {
+    public void loadBanks() throws IOException, RuntimeException {
         if (FileManager.getInstance().isFileExist("Banks.txt")) {
             for (String content : FileManager.getInstance().readFromFile("Banks.txt")) {
                 Bank bank = new Bank();
@@ -41,7 +41,7 @@ public class BankProvider {
         }
     }
 
-    public void loadAccounts() throws IOException {
+    public void loadAccounts() throws IOException, RuntimeException {
         if (FileManager.getInstance().isFileExist("Accounts.txt")) {
             for (String content : FileManager.getInstance().readFromFile("Accounts.txt")) {
                 BankAccount account = new BankAccount();
@@ -60,7 +60,7 @@ public class BankProvider {
         }
     }
 
-    public void loadUsers() throws IOException {
+    public void loadUsers() throws IOException, RuntimeException {
         if (FileManager.getInstance().isFileExist("People.txt")) {
             for (String content : FileManager.getInstance().readFromFile("People.txt")) {
                 Person person = new Person();
@@ -106,7 +106,7 @@ public class BankProvider {
         users.add(user);
     }
 
-    public Boolean addAccount(Person accountUser, Swift swiftNumber) throws IOException {
+    public Boolean addAccount(Person accountUser, Swift swiftNumber) throws IOException, RuntimeException {
         String numbers = new Random().ints(0, 9).boxed().filter(i -> i >= 0 && i <= 9).limit(18).collect(StringBuilder::new, StringBuilder::append, StringBuilder::append).toString();
         if (getBank(swiftNumber).getBankAccountList().size() != 0) {
             for (BankAccount bankAccount : getBank(swiftNumber).getBankAccountList()) {
@@ -127,43 +127,43 @@ public class BankProvider {
         return true;
     }
 
-    public void cashWithdrawer(BankAccount account, int money, Swift swiftNumber) throws IOException {
+    public void cashWithdrawer(BankAccount account, int money, Swift swiftNumber) throws IOException, RuntimeException {
         Withdraw transfer = new Withdraw(account, money, swiftNumber);
         transfer.execute();
     }
 
-    public void transferWithdrawer(BankAccount firstAccount, BankAccount secondAccount, int money, String paymentTitle, Swift swiftNumber) throws IOException {
+    public void transferWithdrawer(BankAccount firstAccount, BankAccount secondAccount, int money, String paymentTitle, Swift swiftNumber) throws IOException, RuntimeException {
         DomesticTransfer transfer = new DomesticTransfer(firstAccount, secondAccount, money, paymentTitle, swiftNumber);
         transfer.execute();
     }
 
-    public void internationalTransfer(Swift swiftBank1, Swift swiftBank2, String paymentTitle, int money, BankAccount firstAccount, BankAccount secondAccount) throws IOException {
+    public void internationalTransfer(Swift swiftBank1, Swift swiftBank2, String paymentTitle, int money, BankAccount firstAccount, BankAccount secondAccount) throws IOException, RuntimeException {
         InternationalTransfer transfer = new InternationalTransfer(firstAccount, secondAccount, money, paymentTitle, swiftBank1, swiftBank2);
         transfer.execute();
     }
 
-    public void deposit(BankAccount account, int money, Swift swiftNumber) throws IOException {
+    public void deposit(BankAccount account, int money, Swift swiftNumber) throws IOException, RuntimeException {
         Deposit depositTransfer = new Deposit(account, money, swiftNumber);
         depositTransfer.execute();
     }
 
-    public List<String> readPaymentsHistory() throws IOException {
+    public List<String> readPaymentsHistory() throws IOException, RuntimeException {
         return FileManager.getInstance().readFromFile("Payments.txt");
     }
 
-    public List<String> readClientHistory(String surname) throws IOException {
+    public List<String> readClientHistory(String surname) throws IOException, RuntimeException {
         return FileManager.getInstance().readFromFile(surname + ".txt");
     }
 
-    public List<String> readAccountHistory(String accountNumber) throws IOException {
+    public List<String> readAccountHistory(String accountNumber) throws IOException, RuntimeException {
         return FileManager.getInstance().readFromFile(accountNumber + ".txt");
     }
 
-    public List<String> readBankHistory(String swiftNumber) throws IOException {
+    public List<String> readBankHistory(String swiftNumber) throws IOException, RuntimeException {
         return FileManager.getInstance().readFromFile(swiftNumber + ".txt");
     }
 
-    public void updateHistory(String path, String contents) throws IOException {
+    public void updateHistory(String path, String contents) throws IOException, RuntimeException {
         if (FileManager.getInstance().isFileExist(path + ".txt")) {
             FileManager.getInstance().removeFile(path + ".txt");
             FileManager.getInstance().openFile(path + ".txt");

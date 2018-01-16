@@ -74,8 +74,11 @@ public class BankService {
                 return false;
             }
             doSomething(userChoice);
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+            System.exit(-1);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
             System.exit(-1);
         }
         return true;
@@ -138,18 +141,14 @@ public class BankService {
     }
 
     private void createUser() {
-        try {
-            logger.info("Enter your name: ");
-            String name = scanner.next();
-            logger.info("Enter your surname: ");
-            String surname = scanner.next();
-            logger.info("Enter your PESEL");
-            String PESEL = scanner.next();
-            Person person = new Person(name, surname, PESEL);
-            bankProvider.addUser(person);
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
-        }
+        logger.info("Enter your name: ");
+        String name = scanner.next();
+        logger.info("Enter your surname: ");
+        String surname = scanner.next();
+        logger.info("Enter your PESEL");
+        String PESEL = scanner.next();
+        Person person = new Person(name, surname, PESEL);
+        bankProvider.addUser(person);
     }
 
     private void createAccount() {
@@ -168,8 +167,10 @@ public class BankService {
             int personChoice = scanner.nextInt();
             if (bankProvider.addAccount(bankProvider.getUsers().get(personChoice), bankProvider.getAllBanks().get(bankChoice).getSwiftNumber()))
                 logger.info("An account has been created.");
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
         }
     }
 
@@ -194,8 +195,10 @@ public class BankService {
             Swift bankSwiftNumber = bankProvider.getAllBanks().get(bankChoice).getSwiftNumber();
             BankAccount withdrawFrom = bankProvider.getAllBanks().get(bankChoice).getBankAccountList().get(accountChoice);
             bankProvider.cashWithdrawer(withdrawFrom, cash, bankSwiftNumber);
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
         }
     }
 
@@ -229,8 +232,10 @@ public class BankService {
             BankAccount transferFrom = bankProvider.getAllBanks().get(bankChoice).getBankAccountList().get(firstAccountChoice);
             BankAccount transferTo = bankProvider.getAllBanks().get(bankChoice).getBankAccountList().get(secondAccountChoice);
             bankProvider.transferWithdrawer(transferFrom, transferTo, money, title, bankSwiftNumber);
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
         }
     }
 
@@ -256,8 +261,10 @@ public class BankService {
             BankAccount depositTo = bankProvider.getAllBanks().get(bankChoice).getBankAccountList().get(accountChoice);
             Swift bankSwiftNumber = bankProvider.getAllBanks().get(bankChoice).getSwiftNumber();
             bankProvider.deposit(depositTo, money, bankSwiftNumber);
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
         }
     }
 
@@ -301,8 +308,10 @@ public class BankService {
             Swift firstBankSwiftNumber = bankProvider.getAllBanks().get(firstBankChoice).getSwiftNumber();
             Swift secondBankSwiftNumber = bankProvider.getAllBanks().get(secondBankChoice).getSwiftNumber();
             bankProvider.internationalTransfer(firstBankSwiftNumber, secondBankSwiftNumber, title, money, transferFrom, transferTo);
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
         }
     }
 
@@ -320,8 +329,10 @@ public class BankService {
             for (String content : bankProvider.readBankHistory(bankSwiftNumber.toString())) {
                 logger.info(content);
             }
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
         }
     }
 
@@ -335,13 +346,15 @@ public class BankService {
                 logger.info(userIterator++ + ". " + user.getName() + " " + user.getSurname());
             }
             int userChoice = scanner.nextInt();
-            String surname = bankProvider.getUsers().get(userChoice).getSurname();
+            String PESEL = bankProvider.getUsers().get(userChoice).getPESEL();
             logger.info("Person view: ");
-            for (String content : bankProvider.readClientHistory(surname)) {
+            for (String content : bankProvider.readClientHistory(PESEL)) {
                 logger.info(content);
             }
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
         }
     }
 
@@ -367,8 +380,10 @@ public class BankService {
             for (String content : bankProvider.readAccountHistory(accountNumber)) {
                 logger.info(content);
             }
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
         }
     }
 
@@ -378,8 +393,10 @@ public class BankService {
             for (String content : bankProvider.readPaymentsHistory()) {
                 logger.info(content);
             }
-        } catch (Exception ex) {
-            logger.error("Sorry, something wrong: ", ex);
+        } catch (IOException ex) {
+            logger.error("Sorry, something wrong on IN-OUT : ", ex);
+        } catch (RuntimeException ex) {
+            logger.error("Sorry, something wrong on Runtime: ", ex);
         }
     }
 }

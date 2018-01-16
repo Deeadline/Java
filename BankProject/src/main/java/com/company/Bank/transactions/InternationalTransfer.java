@@ -26,7 +26,7 @@ public class InternationalTransfer implements Transfer {
     }
 
     @Override
-    public void execute() throws IOException {
+    public void execute() throws IOException, RuntimeException {
         if (BankProvider.getBankProviderInstance().getBank(firstBankSwiftNumber).getBankAccountList().contains(firstAccount)) {
             if (BankProvider.getBankProviderInstance().getBank(secondBankSwiftNumber).getBankAccountList().contains(secondAccount)) {
                 firstAccount.withdraw(cash);

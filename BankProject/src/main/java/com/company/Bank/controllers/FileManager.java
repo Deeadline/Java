@@ -26,11 +26,11 @@ public class FileManager {
         return file.exists() && file.isFile();
     }
 
-    public void openFile(String path) throws IOException {
+    public void openFile(String path) throws IOException, RuntimeException {
         new File(path).createNewFile();
     }
 
-    public void saveToFile(String path, String contents) throws IOException {
+    public void saveToFile(String path, String contents) throws IOException, RuntimeException {
         try {
             FileWriter writer = new FileWriter(path, true);
             PrintWriter printWriter = new PrintWriter(writer);
@@ -41,7 +41,7 @@ public class FileManager {
         }
     }
 
-    public List<String> readFromFile(String path) throws IOException {
+    public List<String> readFromFile(String path) throws IOException, RuntimeException {
         List<String> content = new ArrayList<>();
         try {
             FileReader reader = new FileReader(path);

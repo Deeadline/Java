@@ -20,7 +20,7 @@ public class Withdraw implements Transfer {
     }
 
     @Override
-    public void execute() throws IOException {
+    public void execute() throws IOException, RuntimeException {
         account.withdraw(cash);
         BankProvider.getBankProviderInstance().getBank(bankSwiftNumber).addPayments(this);
         BankProvider.getBankProviderInstance().getUser(account).addPayment(this);

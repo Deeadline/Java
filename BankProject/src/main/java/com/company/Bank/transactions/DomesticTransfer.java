@@ -23,7 +23,7 @@ public class DomesticTransfer implements Transfer {
     }
 
     @Override
-    public void execute() throws IOException {
+    public void execute() throws IOException, RuntimeException {
         firstAccount.withdraw(cash);
         secondAccount.deposit(cash);
         BankProvider.getBankProviderInstance().getBank(bankSwiftNumber).addPayments(this);

@@ -44,14 +44,18 @@ public class BankAccount implements Savable {
 
     public int deposit(int value) {
         if (value < 0)
-            throw new IllegalArgumentException("You cant Deposit minus value");
+            throw new IllegalArgumentException("You can't deposit minus value");
         this.accountBalance += value;
         return accountBalance;
     }
 
     public int withdraw(int value) {
+        int accountBalance = this.accountBalance - value;
         if (this.accountBalance < 0 || value < 0)
-            throw new IllegalArgumentException("You cant Withdraw!");
+            throw new IllegalArgumentException("You can't withdraw!");
+        if(accountBalance < 0 ){
+            throw new IllegalArgumentException("You can't run into debt!");
+        }
         this.accountBalance -= value;
         return accountBalance;
     }
