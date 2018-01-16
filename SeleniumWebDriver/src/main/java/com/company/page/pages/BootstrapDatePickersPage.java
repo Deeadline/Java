@@ -54,7 +54,7 @@ public class BootstrapDatePickersPage extends PageObjectFactory<BootstrapDatePic
     }
 
     public void clickOnStartDate() {
-        click((By) dateCalendar.findElement((SearchContext) startDate));
+        click(startDate);
     }
 
     public void clickOnEndDateInput() {
@@ -62,7 +62,7 @@ public class BootstrapDatePickersPage extends PageObjectFactory<BootstrapDatePic
     }
 
     public void clickOnEndDate() {
-        click((By) dateCalendar.findElement((SearchContext) endDate));
+        click(endDate);
     }
 
     public String showStartDate() {

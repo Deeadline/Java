@@ -1,5 +1,6 @@
 package com.company;
 
+
 import org.apache.log4j.xml.DOMConfigurator;
 
 public class Main {

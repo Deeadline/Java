@@ -8,21 +8,24 @@ import org.junit.Before;
 import org.junit.AfterClass;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 
 public class TestBootstrapAlertMessages {
     private static BootstrapAlertMessagesPage webPage;
-    private static WebDriver webDriver = new ChromeDriver();
+    private static final WebDriver webDriver = new ChromeDriver();
 
     @BeforeClass
     public static void runPage() {
         webPage = new BootstrapAlertMessagesPage(webDriver);
         webPage.openPage();
     }
+
     @Before
     public void waitForNext() throws InterruptedException {
         Thread.sleep(2000);
     }
+
     @Test
     public void autoSuccessMessage() throws InterruptedException {
         webPage.clickOnAutoSuccessMessageButton();

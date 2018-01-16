@@ -15,40 +15,43 @@ public class FileDownloadPage extends PageObjectFactory<FileDownloadPage> {
         super(driver);
     }
 
-    public void clickOnDataProvider(){
+    public void clickOnDataProvider() {
         click(inputData);
     }
 
-    public void enterData(String text){
+    public void enterData(String text) {
         sendKeys(inputData, text);
     }
 
-    public String showCharactersRemaining(){
+    public String showCharactersRemaining() {
         return show(charactersRemaining);
     }
 
-    public void clickOnGenerateFileButton(){
+    public void clickOnGenerateFileButton() {
         click(generateFileButton);
     }
 
-    public void clickOnDownloader(){
+    public void clickOnDownloader() {
         click(downloader);
     }
 
-    public boolean isActiveGenerator(){
+    public boolean isActiveGenerator() {
         return isEnabled(generateFileButton);
     }
 
-    public boolean isActiveDownloader(){
+    public boolean isActiveDownloader() {
         return isEnabled(downloader);
     }
-    public boolean isContaining(){
+
+    public boolean isContaining() {
         return isContain("Download");
     }
-    public void openPage(){
+
+    public void openPage() {
         getPage(URL);
     }
-    public void closePage(){
+
+    public void closePage() {
         close();
     }
 }

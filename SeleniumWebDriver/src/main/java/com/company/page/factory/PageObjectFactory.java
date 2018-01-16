@@ -13,10 +13,9 @@ public class PageObjectFactory<T> {
     protected WebDriverWait webWait;
 
     public PageObjectFactory(WebDriver webdriver) {
-        String chromeDriverPath = "chromedriver.exe";
-        System.setProperty("webdriver.chrome.driver", chromeDriverPath);
+        System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
         this.webdriver = webdriver;
-        webWait = new WebDriverWait(webdriver,30);
+        webWait = new WebDriverWait(webdriver, 30);
     }
 
     protected T getPage(String url) {

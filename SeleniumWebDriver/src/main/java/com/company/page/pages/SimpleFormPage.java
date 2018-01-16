@@ -68,9 +68,10 @@ public class SimpleFormPage extends PageObjectFactory<SimpleFormPage> {
         close();
     }
 
-    public String checkFirstNumber(){
+    public String checkFirstNumber() {
         return show(messageSumInput);
     }
+
     public String checkSeondNumber() {
         return show(messageSumInput2);
     }

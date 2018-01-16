@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.Assert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 
 import java.text.ParseException;
 import java.time.LocalDate;
@@ -39,7 +40,7 @@ public class TestBootstrapDatePickers {
         webPage.clickOnEndDateInput();
         Assert.assertTrue(webPage.isActive());
         webPage.clickOnEndDate();
-        LocalDate startDate = LocalDate.parse("18/01/2018",webPage.getDateFormatOutcome());
+        LocalDate startDate = LocalDate.parse("19/01/2018",webPage.getDateFormatOutcome());
         LocalDate endDate = LocalDate.parse("20/01/2018",webPage.getDateFormatOutcome());
         Assert.assertEquals(startDate.format(webPage.getDateFormatOutcome()),webPage.showStartDate());
         Assert.assertEquals(endDate.format(webPage.getDateFormatOutcome()),webPage.showEndDate());
