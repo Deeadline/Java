@@ -1,0 +1,6 @@
+#org.jbehave.core.embedder.StoryManager
+#Tue Jan 16 01:52:23 CET 2018
+threads=1
+total=21000
+threadAverage=21000
+main/java/com/company/seleniumpages/test_story4.story=21000
