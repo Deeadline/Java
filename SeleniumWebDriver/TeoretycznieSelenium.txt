@@ -4,7 +4,3 @@
 -- remotewebdriver 127.0.0.1:port/wd/hub
 
 seleniumeasy.com/test/basic-first-form-demo.html
-
-Ogarnąć xPath - parser XML , zapoznać się z jego funkcjami :)
-
-Przetestować jakiś element ze stronki seleniumeasy.com -> 10 różnych elementów.
